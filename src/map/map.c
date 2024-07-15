@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   types.h                                            :+:      :+:    :+:   */
+/*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 22:23:56 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/15 20:08:11 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/15 15:49:47 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/15 18:06:10 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TYPES_H
-# define TYPES_H
+#include "map.h"
 
-typedef void	(*t_handle_func)(void *param);
-typedef void	(*t_key_func)(mlx_key_data_t, void *param);
-
-typedef	struct	s_player
+void	init_map(t_map *map)
 {
-	int			x0;
-	int			y0;
-	float		dx;
-	float		dy;
-	int		theta;
-	mlx_image_t	*img;
-}				t_player;
-
-#endif
+	static int grid[8 * 8] =
+		{1,1,1,1,1,1,1,1,
+		 1,0,1,0,0,0,0,1,
+		 1,0,1,0,0,0,0,1,
+		 1,0,1,0,0,0,0,1,
+		 1,0,0,0,0,0,0,1,
+		 1,0,0,0,0,1,0,1,
+		 1,0,0,0,0,0,0,1,
+		 1,1,1,1,1,1,1,1,};
+	map->grid = grid;
+	map->len_x = 8;
+	map->len_y = 8;
+	map->cube_s = 64;
+}

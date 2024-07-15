@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   image.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuuko <yuuko@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:44:09 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/06 13:44:35 by yuuko            ###   ########.fr       */
+/*   Updated: 2024/07/15 15:32:16 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "ctx/ctx.h"
 #include <stdint.h>
 
-mlx_image_t	*ctx_image_new(uint32_t width, uint32_t height)
+mlx_image_t	*ctx_img_new(uint32_t width, uint32_t height)
 {
 	mlx_image_t	*img;
 
@@ -24,7 +24,7 @@ mlx_image_t	*ctx_image_new(uint32_t width, uint32_t height)
 	return (img);
 }
 
-int32_t	ctx_image_display(mlx_image_t *img, int32_t x, int32_t y)
+int32_t	ctx_img_display(mlx_image_t *img, int32_t x, int32_t y)
 {
 	int32_t	index;
 
@@ -34,9 +34,8 @@ int32_t	ctx_image_display(mlx_image_t *img, int32_t x, int32_t y)
 	return (index);
 }
 
-void	ctx_image_resize(mlx_image_t *img, uint32_t new_width,
-		uint32_t new_height)
+void	ctx_img_rsz(mlx_image_t *img, uint32_t n_width, uint32_t n_height)
 {
-	if (!mlx_resize_image(img, new_width, new_height))
+	if (!mlx_resize_image(img, n_width, n_height))
 		ctx_panic();
 }

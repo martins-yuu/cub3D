@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yuuko <yuuko@student.42.fr>                +#+  +:+       +#+         #
+#    By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/03 18:20:34 by yuuko             #+#    #+#              #
-#    Updated: 2024/07/15 14:08:11 by yuuko            ###   ########.fr        #
+#    Updated: 2024/07/15 17:43:31 by tforster         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRCS		:= \
 	ctx/image.c \
 	ctx/event.c \
 	common/error.c \
+	map/map.c \
 
 SRCS		:= $(addprefix $(SRC_DIR)/, $(SRCS))
 
@@ -51,7 +52,8 @@ OBJS		:= $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS		:= $(OBJS:.o=.d)
 
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror
+# CFLAGS		:= -Wall -Wextra -Werror
+CFLAGS		:= -g3
 
 CPPFLAGS	:= $(addprefix -I,$(INCS)) -MMD -MP
 LDFLAGS		:= $(addprefix -L,$(dir $(LIBS)))

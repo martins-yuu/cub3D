@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuuko <yuuko@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 22:37:11 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/15 14:07:23 by yuuko            ###   ########.fr       */
+/*   Updated: 2024/07/15 15:47:52 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,9 @@ void	ctx_on_loop(t_handle_func handle, void *param)
 {
 	if (!mlx_loop_hook(ctx(), handle, param))
 		ctx_panic();
+}
+
+void	ctx_on_key(t_key_func key, void *param)
+{
+	mlx_key_hook(ctx(), key, param);
 }

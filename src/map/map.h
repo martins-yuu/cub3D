@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   types.h                                            :+:      :+:    :+:   */
+/*   map.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 22:23:56 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/15 20:08:11 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/15 15:51:36 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/15 18:05:52 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TYPES_H
-# define TYPES_H
+#ifndef MAP_H
+# define MAP_H
 
-typedef void	(*t_handle_func)(void *param);
-typedef void	(*t_key_func)(mlx_key_data_t, void *param);
+# define mapX 8		//map width
+# define mapY 8		//map height
+# define mapS 64	//map cube size
 
-typedef	struct	s_player
+typedef struct	 s_map
 {
-	int			x0;
-	int			y0;
-	float		dx;
-	float		dy;
-	int		theta;
-	mlx_image_t	*img;
-}				t_player;
+	int			*grid;
+	int			map_test;
+	int			len_x;
+	int			len_y;
+	int			cube_s;
+}				t_map;
+
+void	init_map(t_map *map);
 
 #endif

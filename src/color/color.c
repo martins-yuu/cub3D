@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuuko <yuuko@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 05:14:23 by yuuko             #+#    #+#             */
-/*   Updated: 2024/06/25 19:06:11 by yuuko            ###   ########.fr       */
+/*   Updated: 2024/07/15 15:17:13 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_color	color_from_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	});
 }
 
-t_color	color_opacity(t_color c, double opacity)
+t_color	color_opacity(t_color c, float opacity)
 {
 	return ((t_color){
 		.red = c.red,
@@ -52,7 +52,7 @@ t_color	color_grayscale(t_color c)
 	});
 }
 
-t_color	color_lerp(t_color a, t_color b, double t)
+t_color	color_lerp(t_color a, t_color b, float t)
 {
 	return ((t_color){
 		.red = a.red + (b.red - a.red) * t,
