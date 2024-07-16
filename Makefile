@@ -6,7 +6,7 @@
 #    By: yuuko <yuuko@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/03 18:20:34 by yuuko             #+#    #+#              #
-#    Updated: 2024/07/15 14:08:11 by yuuko            ###   ########.fr        #
+#    Updated: 2024/07/16 00:25:52 by yuuko            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,9 @@ SRC_DIR		:= src
 SRCS		:= \
 	main.c \
 	color/color.c \
-	ctx/ctx.c \
-	ctx/image.c \
-	ctx/event.c \
+	window/window.c \
+	window/image.c \
+	window/event.c \
 	common/error.c \
 
 SRCS		:= $(addprefix $(SRC_DIR)/, $(SRCS))
