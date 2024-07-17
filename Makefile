@@ -6,7 +6,7 @@
 #    By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/03 18:20:34 by yuuko             #+#    #+#              #
-#    Updated: 2024/07/15 17:43:31 by tforster         ###   ########.fr        #
+#    Updated: 2024/07/16 19:18:54 by tforster         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,10 @@ SRCS		:= \
 	ctx/image.c \
 	ctx/event.c \
 	common/error.c \
+	vector/angle.c \
+	vector/bresenham.c \
 	map/map.c \
+	player/player.c \
 
 SRCS		:= $(addprefix $(SRC_DIR)/, $(SRCS))
 

@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.h                                              :+:      :+:    :+:   */
+/*   bresenham.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/15 15:51:36 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/16 20:31:40 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/16 19:20:57 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/16 21:18:39 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAP_H
-# define MAP_H
+#ifndef BRESENHAM_H
+# define BRESENHAM_H
 
-# include "vector/vector.h"
+# include "vector.h"
 # include "MLX42/MLX42.h"
+# include "color/color.h"
 
-# define mapX 8		//map width
-# define mapY 8		//map height
-# define mapS 64	//map cube size
-
-typedef struct	 s_map
+typedef struct s_bresenham
 {
-	int			*grid;
-	t_ivec2		grid_size;
-	int			cube_s;
-	int		player_ang;
-	t_ivec2		player_pos0;
-	mlx_image_t	*img;
-}				t_map;
+	int		dx;
+	int		sx;
+	int		dy;
+	int		sy;
+	int		err;
+	int		e2;
+	float	dist;
+	float	step;
+}			t_ctrl;
 
-void	init_map(t_map *map, int width, int height);
+void	bresenham(mlx_image_t *img, t_fvec2 fv[2], t_color c);
 
 #endif

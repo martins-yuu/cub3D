@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.h                                              :+:      :+:    :+:   */
+/*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/15 15:51:36 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/16 20:31:40 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/16 22:04:30 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAP_H
-# define MAP_H
+#ifndef PLAYER_H
+# define PLAYER_H
 
-# include "vector/vector.h"
-# include "MLX42/MLX42.h"
+# include "map/map.h"
 
-# define mapX 8		//map width
-# define mapY 8		//map height
-# define mapS 64	//map cube size
+# define STEP	5
+# define ANG	2
+# define PLAYER_SIZE	4
 
-typedef struct	 s_map
+typedef struct s_player
 {
-	int			*grid;
-	t_ivec2		grid_size;
-	int			cube_s;
-	int		player_ang;
-	t_ivec2		player_pos0;
+	t_ivec2		p0;
+	t_fvec2		del;
+	float		theta;
+	int			size;
 	mlx_image_t	*img;
-}				t_map;
+	int			*grid;
+}				t_player;
 
-void	init_map(t_map *map, int width, int height);
+void	init_player(t_map *map, t_player *player, int x0, int y0);
+void	draw_player(void *param);
 
 #endif

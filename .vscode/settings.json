@@ -2,6 +2,17 @@
 	"files.associations": {
 		"functional": "c",
 		"typeinfo": "c",
-		"math.h": "c"
+		"math.h": "c",
+		"map": "c",
+		"player.h": "c",
+		"*.tcc": "c",
+		"cmath": "c",
+		"numeric": "c",
+		"cinttypes": "c",
+		"cstdlib": "c",
+		"map.h": "c",
+		"mlx42.h": "c",
+		"stdlib.h": "c",
+		"bresenham.h": "c"
 	}
 }
