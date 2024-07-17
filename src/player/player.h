@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/16 22:04:30 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:30:07 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 
 typedef struct s_player
 {
-	t_ivec2		p0;
+	t_fvec2		p0;
 	t_fvec2		del;
-	float		theta;
+	float		theta_dg;
 	int			size;
 	mlx_image_t	*img;
 	int			*grid;

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:05:29 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/16 19:07:06 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/17 12:11:52 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 #include <math.h>
 
 float	deg_rad(int theta);
-void	fix_angle(int *theta);
+float	fix_angle(float theta);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:03 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/16 22:10:57 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:47:30 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 #include "vector/bresenham.h"
 #include "ft_string.h"
 
+
+#include "stdio.h"
+
 static void	orientation_vec(t_player *player, int center);
 static void	draw_2drays(t_player *player);
 
@@ -24,11 +27,11 @@ void	init_player(t_map *map, t_player *player, int x0, int y0)
 {
 	mlx_image_t	*img;
 
-	player->p0.x = (map->cube_s * map->player_pos0.x + map->cube_s / 2);
-	player->p0.y = (map->cube_s * map->player_pos0.y + map->cube_s / 2);
-	player->theta = 90;
-	player->del.x = cosf(deg_rad(player->theta));
-	player->del.y = -sinf(deg_rad(player->theta));
+	player->p0.x = (float) (map->cube_s * map->player_pos0.x + map->cube_s / 2);
+	player->p0.y = (float) (map->cube_s * map->player_pos0.y + map->cube_s / 2);
+	player->theta_dg = 90;
+	player->del.x = cosf(deg_rad(player->theta_dg));
+	player->del.y = -sinf(deg_rad(player->theta_dg));
 	player->size = PLAYER_SIZE;
 	player->img = ctx_img_new(512, 512);
 	player->grid = map->grid;
@@ -56,8 +59,8 @@ void	draw_player(void *param)
 			(i / player->size) + player->p0.y, c.value);
 		i++;
 	}
-	orientation_vec(player, player->size / 2 - 1);
 	draw_2drays(player);
+	orientation_vec(player, player->size / 2 - 1);
 }
 
 static void	draw_2drays(t_player *player)
@@ -74,36 +77,85 @@ static void	draw_2drays(t_player *player)
 	float	ry;
 	float	vx;
 	float	vy;
-	float	ray_theta;
+	float	theta_rad;
 	float	xo;
 	float	yo;
 
-	ray_theta = player->theta;
+	float	dist_v;
+	float	dist_h;
+
+	// theta_rad = fix_angle(player->theta_dg + 30);
+	// theta_rad = deg_rad(player->theta_dg);
+	// float	degree = player->theta_dg;
+	theta_rad = deg_rad(fix_angle (player->theta_dg));
+	// theta_rad = fix_angle(player->theta_dg);
+	// theta_rad = player->theta_dg;
+
 	nb_ray = 0;
 	while (nb_ray < 1)
 	{
-		float	tg;
-
-		// vertical
+		// VERTICAL
 		dof = 0;
-		tg = tanf(deg_rad(ray_theta));
+		float tg = tanf(theta_rad);
+		dist_v = 100000;
+		if (cos(theta_rad) > 0.001)
+		{
+			rx = (((int) player->p0.x >> 6) << 6) + 64;
+			ry = (player->p0.x - rx) * tg + player->p0.y;
+			xo = 64;
+			yo = -xo * tg;
+		} // LEFT
+		else if (cos(theta_rad) < -0.001)
+		{
+			rx = (((int) player->p0.x >> 6) << 6) - 0.0001;
+			ry = (player->p0.x - rx) * tg + player->p0.y;
+			xo = -64;
+			yo = -xo * tg;
+		} // RIGHT
+		else
+		{
+			rx = player->p0.x;
+			ry = player->p0.y;
+			dof = 8;
+		} // looking straight up or down
+		while (dof < 8)
+		{
+			mx = (int)(rx) >> 6;
+			my = (int)(ry) >> 6;
+
+			mp = my * 8 + mx;
+			if (mp > 0 && mp < (8 * 8) && player->grid[mp] == 1)
+			{
+				dof = 8;
+				dist_v = cosf(theta_rad) * (rx - player->p0.y) - sinf(theta_rad) * (ry - player->p0.y);
+			} // HIT
+			else
+			{
+				rx += xo;
+				ry += yo;
+				dof +=1;
+			} // CHECK NEXT HORIZONTAL
+		}
+		vx = rx;
+		vy = ry;
 
 		// HORIZONTAL
 		dof = 0;
-		tg = 1 / tanf(ray_theta);
-		if (sinf(deg_rad(ray_theta)) > 0.001)
+		float inv_tg = 1.0 / tg;
+		dist_h = 100000;
+		if (sinf(theta_rad) > 0.001)
 		{
-			ry = (((int) player->p0.y >> 6) << 6) - 0.0001;
-			rx = (player->p0.y - ry) * tg + player->p0.x;
+			ry = (((int)player->p0.y>>6)<< 6) - 0.0001;
+			rx = (player->p0.y - ry) * inv_tg + player->p0.x;
 			yo = -64;
-			xo = -yo * tg;
+			xo = -yo*inv_tg;
 		} // UP
-		else if (sinf(deg_rad(ray_theta)) < -0.001)
+		else if (sinf(theta_rad) < -0.001)
 		{
 			ry = (((int) player->p0.y >> 6) << 6) + 64;
-			rx = (player->p0.y - ry) * tg + player->p0.x;
+			rx = (player->p0.y - ry) * inv_tg + player->p0.x;
 			yo = 64;
-			xo = -yo * tg;
+			xo = -yo*inv_tg;
 		} // DOWN
 		else
 		{
@@ -113,12 +165,15 @@ static void	draw_2drays(t_player *player)
 		} // looking straight left or right
 		while (dof < 8)
 		{
-			mx = (int) rx >> 6;
-			my = (int) ry >> 6;
-			mp = my * player->img->width + mx;
-			if (mp > 0 && mp < (player->img->width * player->img->height) && player->grid[mp] == 0)
+			mx = (int)(rx) >> 6;
+			my = (int)(ry) >> 6;
+
+			mp = my * 8 + mx;
+			if (mp > 0 && mp < (8 * 8) && player->grid[mp] == 1)
 			{
 				dof = 8;
+				dist_h = cosf(theta_rad) * (rx - player->p0.y) - sinf(theta_rad) * (ry - player->p0.y);
+
 			} // HIT
 			else
 			{
@@ -127,6 +182,12 @@ static void	draw_2drays(t_player *player)
 				dof +=1;
 			} // CHECK NEXT HORIZONTAL
 		}
+		if (dist_v < dist_h)
+		{
+			rx = vx;
+			ry = vy;
+			dist_h = dist_v;
+		}
 		nb_ray++;
 		t_fvec2 fvec[2];
 		fvec[0].x = player->p0.x + player->size / 2 - 1;
@@ -134,9 +195,10 @@ static void	draw_2drays(t_player *player)
 
 		fvec[1].x = rx;
 		fvec[1].y = ry;
-
-		bresenham(player->img, fvec);
+		t_color	c = color(0xFF0000FF);
+		bresenham(player->img, fvec, c);
 	}
+	// printf("ANG[%f][%f]\n", player->theta_dg, theta_rad);
 }
 
 void	orientation_vec(t_player *player, int center)

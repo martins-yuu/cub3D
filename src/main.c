@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:53:01 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/16 20:11:38 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:30:39 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,41 +40,43 @@ void	movement(void *param)
 	//  LEFT
 	if (mlx_is_key_down(ctx(), MLX_KEY_A))
 	{
-		player->theta += ANG;
-		player->del.x = cosf(deg_rad (player->theta));
-		player->del.y = -sinf(deg_rad (player->theta));
+		player->theta_dg += ANG;
+		player->theta_dg = fix_angle(player->theta_dg);
+		player->del.x = cosf(deg_rad (player->theta_dg));
+		player->del.y = -sinf(deg_rad (player->theta_dg));
 	}
 	// RIGHT
 	if (mlx_is_key_down(ctx(), MLX_KEY_D))
 	{
-		player->theta -= ANG;
-		player->del.x = cosf(deg_rad (player->theta));
-		player->del.y = -sinf(deg_rad (player->theta));
+		player->theta_dg -= ANG;
+		player->theta_dg = fix_angle(player->theta_dg);
+		player->del.x = cosf(deg_rad (player->theta_dg));
+		player->del.y = -sinf(deg_rad (player->theta_dg));
 	}
 	// UP
 	if (mlx_is_key_down(ctx(), MLX_KEY_W))
 	{
-		// printf("W THETA %d dy[%f] dx[%f] \n", player->theta, player->dy, player->dx);
+		// printf("W THETA_dg %d dy[%f] dx[%f] \n", player->theta_dg, player->dy, player->dx);
 		// player->img->instances[0].x += (int) (5.0 * player->del.x);
 		// player->img->instances[0].y += (int) (5.0 * player->del.y);
-		player->p0.x += (int) (STEP * player->del.x);
-		player->p0.y += (int) (STEP * player->del.y);
+		player->p0.x += (STEP * player->del.x);
+		player->p0.y += (STEP * player->del.y);
 
 	}
 	// DOWN
 	if (mlx_is_key_down(ctx(), MLX_KEY_S))
 	{
-		// printf("S THETA %d dy[%f] dx[%f] \n", player->theta, player->dy, player->dx);
+		// printf("S THETA_dg %d dy[%f] dx[%f] \n", player->theta_dg, player->dy, player->dx);
 		// player->img->instances[0].x -= (int) (5.0 * player->del.x);
 		// player->img->instances[0].y -= (int) (5.0 * player->del.y);
-		player->p0.x -= (int) (STEP * player->del.x);
-		player->p0.y -= (int) (STEP * player->del.y);
+		player->p0.x -= (STEP * player->del.x);
+		player->p0.y -= (STEP * player->del.y);
 
 	}
 	// float dist = powf(STEP * player->del.x, 2) + pow(STEP * player->del.y, 2);
 	// dist = sqrtf(dist);
 	// printf("DIST [%f][%d] X[%d][%f] Y[%d][%f]\n",
-	// 	dist, player->theta, player->p0.x, player->del.x, player->p0.y, player->del.y);
+	// 	dist, player->theta_dg, player->p0.x, player->del.x, player->p0.y, player->del.y);
 	draw_player(player);
 }
 
