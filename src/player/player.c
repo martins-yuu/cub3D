@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:03 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/17 22:40:14 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/18 19:25:34 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "graph_lib/graph_func.h"
 
 
+#include "graph_lib/graph_types.h"
 #include "stdio.h"
 
 // static void	orientation_vec(t_player *player, int del);
@@ -28,6 +29,8 @@ t_line	sub_arrowS(t_fvec2 *ivec, t_fvec2 *sub, t_fvec2 *idel, int org);
 void	perp(t_player *plr, int del);
 
 static void	draw_2drays(t_player *player);
+
+static void	player_geometry(t_fvec2 geometry[6]);
 
 void	init_player(t_map *map, t_player *player, int x0, int y0)
 {
@@ -41,10 +44,30 @@ void	init_player(t_map *map, t_player *player, int x0, int y0)
 	player->size = PLAYER_SIZE;
 	player->map = ctx_img_new(x0, y0);
 	player->grid = map->grid;
+	player_geometry(player->geometry);
 	ctx_img_display(player->map, 0, 0);
 	player->view = ctx_img_new(x0, 320);
 	ctx_img_display(player->view, x0, 0);
 }
+
+static void	player_geometry(t_fvec2 geometry[6])
+{
+	geometry[0] = (t_fvec2) { 0.0,   2.0, 1.0};
+	geometry[1] = (t_fvec2) { 1.0,   2.0, 1.0};
+	geometry[2] = (t_fvec2) { 2.0,   1.0, 1.0};
+	geometry[3] = (t_fvec2) { 3.0,   0.0, 1.0};
+	geometry[4] = (t_fvec2) { 2.0, -15.0, 1.0};
+	geometry[5] = (t_fvec2) { 0.0, -20.0, 1.0};
+	geometry[6] = (t_fvec2) {-2.0, -15.0, 1.0};
+	geometry[7] = (t_fvec2) {-3.0,   0.0, 1.0};
+	geometry[8] = (t_fvec2) {-2.0,   1.0, 1.0};
+	geometry[9] = (t_fvec2) {-1.0,   2.0, 1.0};
+}
+
+// static void	draw_player_geometry(t_player plr);
+// {
+// 	mt2_rot_on_point(t_fvec2 *d, float ang)
+// }
 
 void	draw_player(void *param)
 {
@@ -56,7 +79,7 @@ void	draw_player(void *param)
 	player = param;
 	i = 0;
 	ft_memset(player->map->pixels, 0,
-		player->map->width * player->map->width * 4);
+		player->map->width * player->map->height * 4);
 	size = player->size * player->size;
 	while (i < size)
 	{
@@ -67,10 +90,45 @@ void	draw_player(void *param)
 			(i / player->size) + player->p0.y, c.value);
 		i++;
 	}
+	printf("=======>>> PLAYER POS [%.f][%.f]\n", player->p0.x, player->p0.y);
+
+	int p = 0;
+	t_mt2	rot = mt2_rotate(player->theta_dg);
+
+
+
+
+
+	
+	t_mt2	trans = mt2_translate(&player->p0);
+	printf("[%.f][%.f][%.f]\n[%.f][%.f][%.f]\n[%.f][%.f][%.f]\n",
+		trans.i00, trans.i01, trans.i02,
+		trans.i10, trans.i11, trans.i12,
+		trans.i20, trans.i21, trans.i22);
+	t_fvec2	new_p[2];
+	t_ivec2	int_p[2];
+	t_line	plr_line;
+	t_color plr_c = color(0xFFFF00FF);
+	printf(">> BF [%.f][%.f] [%.f][%.f]\n", player->geometry[5].x, player->geometry[5].y,
+		player->geometry[0].x, player->geometry[0].y);
+	while (p < 10)
+	{
+		new_p[0] = mult_fvec2_mt2(&player->geometry[p % 10], &trans);
+		new_p[1] = mult_fvec2_mt2(&player->geometry[(p + 1) % 10], &trans);
+		int_p[0] = (t_ivec2) {(int) new_p[0].x, (int) new_p[0].y};
+		int_p[1] = (t_ivec2) {(int) new_p[1].x, (int) new_p[1].y};
+		plr_line = (t_line) {int_p[0], plr_c, int_p[1], plr_c};
+		printf("{%d}[%.f][%.f] ", p, new_p[0].x, new_p[0].y);
+		bresenham(player->map, &plr_line);
+		p++;
+	}
+	printf("\n>> AF [%.f][%.f] [%.f][%.f]\n", new_p[0].x, new_p[0].y, new_p[1].x, new_p[1].y);
+
+
 
 	ft_memset(player->view->pixels, 0,
-		player->view->width * player->view->width * 4);
-	draw_2drays(player);
+		player->view->width * player->view->height * 4);
+	// draw_2drays(player);
 
 	t_line	line = org_arrow(&player->p0, &player->del, player->size / 2);
 	bresenham(player->map, &line);
@@ -121,7 +179,7 @@ static void	draw_2drays(t_player *player)
 	// ray_theta_rad = fix_angle(player->theta_dg + 30);
 	// ray_theta_rad = deg_rad(player->theta_dg);
 	// float	degree = player->theta_dg;
-	ray_theta_deg = fix_angle(player->theta_dg - 30);
+	ray_theta_deg = fix_angle(player->theta_dg + 30);
 	// ray_theta_rad = fix_angle(player->theta_dg);
 	// ray_theta_rad = player->theta_dg;
 
@@ -180,7 +238,7 @@ static void	draw_2drays(t_player *player)
 		dist_h = 100000;
 		if (sinf(ray_theta_rad) > 0.001)
 		{
-			ry = (((int)player->p0.y>>6)<< 6) - 0.0001;
+			ry = (((int) player->p0.y >> 6) << 6) - 0.0001;
 			rx = (player->p0.y - ry) * inv_tg + player->p0.x;
 			yo = -64;
 			xo = -yo*inv_tg;
@@ -236,11 +294,11 @@ static void	draw_2drays(t_player *player)
 		bresenham(player->map, &line); // DRAW 2D RAYS
 
 		// DRAW VIEW
-		printf("[%d]DIST_H[%.2f]", ray_nb, dist_h);
+		// printf("[%d]DIST_H[%.2f]", ray_nb, dist_h);
 		float view_theta = fix_angle(( player->theta_dg - ray_theta_deg));
 		dist_h = dist_h * cosf(deg_rad(view_theta));
 		// dist_h = dist_h * cosf(deg_rad(ray_theta_deg));
-		printf("ANGs[%.2f][%.2f][%.2f]NEW[%.2f]\n",  player->theta_dg, ray_theta_deg, view_theta, dist_h);
+		// printf("ANGs[%.2f][%.2f][%.2f]NEW[%.2f]\n",  player->theta_dg, ray_theta_deg, view_theta, dist_h);
 		// dist_h = dist_h * cosf(view_theta);
 		int line_h = (64 * 320) / (dist_h);
 		if (line_h > 320)
@@ -256,12 +314,12 @@ static void	draw_2drays(t_player *player)
 			int	i = 0;
 			while (i < 8)
 			{
-				mlx_put_pixel(player->view, ray_nb * 8 + 530 + i, line_off + j, c0.value);
+				mlx_put_pixel(player->view, ray_nb * 8 + i, line_off + j, c0.value);
 				i++;
 			}
 			j++;
 		}
-		ray_theta_deg = fix_angle(ray_theta_deg + 1);
+		ray_theta_deg = fix_angle(ray_theta_deg - 1);
 		// ray_theta_deg--;
 		ray_nb++;
 	}

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:53:01 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/17 15:41:52 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/18 17:58:31 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,35 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 {
 	t_map		mini_map;
 	t_player	player;
+
+	t_fvec2 p0 = {1.0, 1.0, 1.0};
+	t_fvec2 p1 = {2.0, 1.0, 1.0};
+	t_fvec2 p2 = {2.0, 2.0, 1.0};
+	t_fvec2 p3 = {1.0, 2.0, 1.0};
+	t_fvec2 disp = {2.0, 1.0, 1.0};
+
+	t_fvec2 points[4] = {p0, p1, p2, p3};
+	t_fvec2	new[4];
+
+	t_mt2	mat = mt2_rot_on_point(&disp, 45);
+	printf("[%.2f][%.2f][%.2f]\n", sqrt(2.0)/2.0, -sqrt(2.0)/2.0, 2.0 - sqrt(2.0) / 2.0);
+	printf("[%.2f][%.2f][%.2f]\n\n", mat.i00, mat.i01, mat.i02);
+
+	printf("[%.2f][%.2f][%.2f]\n", sqrt(2.0)/2.0, sqrt(2.0)/2.0, -3.0 * sqrt(2.0) / 2.0 + 1.0);
+	printf("[%.2f][%.2f][%.2f]\n\n", mat.i10, mat.i11, mat.i12);
+
+	printf("[%.2f][%.2f][%.2f]\n", 0.0, 0.0, 1.0);
+	printf("[%.2f][%.2f][%.2f]\n\n", mat.i20, mat.i21, mat.i22);
+
+	// printf("[%.2f][%.2f][%.2f]\n\n", mat.i20, mat.i21, mat.i22);
+
+	int i = 0;
+	while (i < 4)
+	{
+		new[i] = mult_fvec2_mt2(&points[i], &mat);
+		printf("[%.2f][%.2f][%.2f]\n", new[i].x, new[i].y, new[i].w);
+		i++;
+	}
 
 	ctx();
 	init_map(&mini_map, 512, 512);

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:09:59 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/17 18:30:18 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/18 15:42:27 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,15 @@ typedef struct	s_fvec2
 {
 	float	x;
 	float	y;
+	float	w;
 }				t_fvec2;
+
+typedef struct	s_mt2
+{
+	float	i00, i01, i02;
+	float	i10, i11, i12;
+	float	i20, i21, i22;
+}				t_mt2;
 
 typedef struct s_line
 {

@@ -16,6 +16,7 @@
 		"bresenham.h": "c",
 		"color.h": "c",
 		"stdint.h": "c",
-		"graph_types.h": "c"
+		"graph_types.h": "c",
+		"constants.h": "c"
 	}
 }

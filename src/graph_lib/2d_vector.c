@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   angle.c                                            :+:      :+:    :+:   */
+/*   2d_vector.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 19:04:18 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/18 16:46:46 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/18 14:56:02 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/18 15:29:00 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "graph_lib/graph_func.h"
 
-float deg_rad(int theta)
+t_ivec2	init_ivec2(int x, int y)
 {
-	return (theta * M_PI/180.0);
+	// const t_ivec2	ivec2 = {x, y,};
+	t_ivec2	ivec2;
+
+	ivec2 = (t_ivec2) {x, y,};
+
+	return (ivec2);
 }
 
-float	fix_angle(float theta)
+t_fvec2	init_fvec2(float x, float y)
 {
-	if (theta > 359)
-		theta -= 360;
-	if (theta < 0)
-		theta += 360;
-	return (theta);
+	const t_fvec2	ivec2 = {x, y, 1,};
+
+	return (ivec2);
 }

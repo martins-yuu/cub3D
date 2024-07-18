@@ -6,7 +6,7 @@
 #    By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/03 18:20:34 by yuuko             #+#    #+#              #
-#    Updated: 2024/07/17 22:11:16 by tforster         ###   ########.fr        #
+#    Updated: 2024/07/18 16:16:12 by tforster         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS		:= \
 	ctx/event.c \
 	common/error.c \
 	graph_lib/angle.c \
+	graph_lib/2d_transform.c \
 	graph_lib/bresenham.c \
 	map/map.c \
 	player/player.c \

@@ -13,6 +13,7 @@
 #include "map/map.h"
 #include "ctx/ctx.h"
 #include "color/color.h"
+#include "graph_lib/graph_func.h"
 
 // #include "vector/bresenham.h"
 
@@ -71,9 +72,24 @@ static void	draw_minimap(t_map *mini_map)
 		y++;
 	}
 
+	t_ivec2	tri[3];
+	t_line	line[3];
+	t_color cc = color(0xFFFF00FF);
+
+	tri[0] = (t_ivec2) {100, 10};
+	tri[1] = (t_ivec2) {10, 200};
+	tri[2] = (t_ivec2) {200, 200};
+
+	line[0] = (t_line) {tri[0], cc, tri[1], cc};
+	line[1] = (t_line) {tri[1], cc, tri[2], cc};
+	line[2] = (t_line) {tri[2], cc, tri[0], cc};
+
+	bresenham(mini_map->img, &line[0]);
+	bresenham(mini_map->img, &line[1]);
+	bresenham(mini_map->img, &line[2]);
+
 	// t_fvec2 v0 = {100, 100};
 	// t_fvec2 v1 = {400, 400};
-	// bresenham(mini_map->img, &v0, &v1);
 }
 
 static void	draw_cube(t_map *mini_map, int x, int y, t_color c)

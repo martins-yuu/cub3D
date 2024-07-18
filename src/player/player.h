@@ -6,13 +6,14 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/17 20:27:59 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/18 19:21:03 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLAYER_H
 # define PLAYER_H
 
+# include "graph_lib/graph_types.h"
 # include "map/map.h"
 
 # define STEP	5
@@ -28,6 +29,7 @@ typedef struct s_player
 	mlx_image_t	*map;
 	mlx_image_t	*view;
 	int			*grid;
+	t_fvec2		geometry[10];
 }				t_player;
 
 void	init_player(t_map *map, t_player *player, int x0, int y0);
