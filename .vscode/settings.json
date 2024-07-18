@@ -13,6 +13,9 @@
 		"map.h": "c",
 		"mlx42.h": "c",
 		"stdlib.h": "c",
-		"bresenham.h": "c"
+		"bresenham.h": "c",
+		"color.h": "c",
+		"stdint.h": "c",
+		"graph_types.h": "c"
 	}
 }

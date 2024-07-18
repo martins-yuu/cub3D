@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:53:01 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/17 13:30:39 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:41:52 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "ctx/constants.h"
 #include "ctx/ctx.h"
 #include "player/player.h"
-#include "vector/angle.h"
+#include "graph_lib/graph_func.h"
 #include <stdint.h>
 #include <stdlib.h>
 

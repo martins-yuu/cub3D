@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/17 13:30:07 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/17 20:27:59 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 # define STEP	5
 # define ANG	2
-# define PLAYER_SIZE	4
+# define PLAYER_SIZE	5
 
 typedef struct s_player
 {
@@ -25,7 +25,8 @@ typedef struct s_player
 	t_fvec2		del;
 	float		theta_dg;
 	int			size;
-	mlx_image_t	*img;
+	mlx_image_t	*map;
+	mlx_image_t	*view;
 	int			*grid;
 }				t_player;
 

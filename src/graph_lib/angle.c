@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bresenham.h                                        :+:      :+:    :+:   */
+/*   angle.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 19:20:57 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/16 21:18:39 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/16 19:04:18 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/17 15:40:03 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BRESENHAM_H
-# define BRESENHAM_H
+#include "graph_lib/graph_func.h"
 
-# include "vector.h"
-# include "MLX42/MLX42.h"
-# include "color/color.h"
-
-typedef struct s_bresenham
+float deg_rad(int theta)
 {
-	int		dx;
-	int		sx;
-	int		dy;
-	int		sy;
-	int		err;
-	int		e2;
-	float	dist;
-	float	step;
-}			t_ctrl;
+	return(theta * M_PI/180.0);
+}
 
-void	bresenham(mlx_image_t *img, t_fvec2 fv[2], t_color c);
-
-#endif
+float	fix_angle(float theta)
+{
+	if (theta > 359)
+		theta -= 360;
+	if (theta < 0)
+		theta += 360;
+	return (theta);
+}

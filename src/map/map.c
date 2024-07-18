@@ -49,10 +49,10 @@ static void	draw_minimap(t_map *mini_map)
 	uint32_t	i;
 	t_color		c[2];
 
-	int	x, y, x0, y0;
+	int	x, y;
 	i = 0;
 
-	int	l = 0;
+	// int	l = 0;
 	c[0] = color(0xf0f0f0FF);
 	c[1] = color(0x272727ff);
 	x = 0;
