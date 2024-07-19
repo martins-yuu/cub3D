@@ -6,31 +6,29 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:03 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/18 19:25:34 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:43:46 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>	// DELETE THIS
+#include <math.h>
+
 #include "ft_string.h"
-#include "player/player.h"
 #include "ctx/ctx.h"
-#include "color/color.h"
 #include "graph_lib/graph_func.h"
-
-
-#include "graph_lib/graph_types.h"
-#include "stdio.h"
+#include "game/game.h"
 
 // static void	orientation_vec(t_player *player, int del);
 
-t_line	org_arrow(t_fvec2 *ivec, t_fvec2 *idel, int org);
-t_line	sub_arrow(t_fvec2 *ivec, t_fvec2 *sub, t_fvec2 *idel, int org);
-t_line	sub_arrowS(t_fvec2 *ivec, t_fvec2 *sub, t_fvec2 *idel, int org);
+t_line	org_arrow(t_vec2 *ivec, t_vec2 *idel, int org);
+t_line	sub_arrow(t_vec2 *ivec, t_vec2 *sub, t_vec2 *idel, int org);
+t_line	sub_arrowS(t_vec2 *ivec, t_vec2 *sub, t_vec2 *idel, int org);
 
 void	perp(t_player *plr, int del);
 
 static void	draw_2drays(t_player *player);
 
-static void	player_geometry(t_fvec2 geometry[6]);
+static void	player_geometry(t_vec2 geometry[6]);
 
 void	init_player(t_map *map, t_player *player, int x0, int y0)
 {
@@ -50,24 +48,19 @@ void	init_player(t_map *map, t_player *player, int x0, int y0)
 	ctx_img_display(player->view, x0, 0);
 }
 
-static void	player_geometry(t_fvec2 geometry[6])
+static void	player_geometry(t_vec2 *geometry)
 {
-	geometry[0] = (t_fvec2) { 0.0,   2.0, 1.0};
-	geometry[1] = (t_fvec2) { 1.0,   2.0, 1.0};
-	geometry[2] = (t_fvec2) { 2.0,   1.0, 1.0};
-	geometry[3] = (t_fvec2) { 3.0,   0.0, 1.0};
-	geometry[4] = (t_fvec2) { 2.0, -15.0, 1.0};
-	geometry[5] = (t_fvec2) { 0.0, -20.0, 1.0};
-	geometry[6] = (t_fvec2) {-2.0, -15.0, 1.0};
-	geometry[7] = (t_fvec2) {-3.0,   0.0, 1.0};
-	geometry[8] = (t_fvec2) {-2.0,   1.0, 1.0};
-	geometry[9] = (t_fvec2) {-1.0,   2.0, 1.0};
+	geometry[0] = (t_vec2) { 0.0,   3.0, 1.0};
+	geometry[1] = (t_vec2) { 2.0,   2.0, 1.0};
+	geometry[2] = (t_vec2) { 3.0,   1.0, 1.0};
+	geometry[3] = (t_vec2) { 3.0,  -3.0, 1.0};
+	geometry[4] = (t_vec2) { 2.0, -10.0, 1.0};
+	geometry[5] = (t_vec2) { 0.0, -20.0, 1.0};
+	geometry[6] = (t_vec2) {-2.0, -10.0, 1.0};
+	geometry[7] = (t_vec2) {-3.0,  -3.0, 1.0};
+	geometry[8] = (t_vec2) {-3.0,   1.0, 1.0};
+	geometry[9] = (t_vec2) {-2.0,   2.0, 1.0};
 }
-
-// static void	draw_player_geometry(t_player plr);
-// {
-// 	mt2_rot_on_point(t_fvec2 *d, float ang)
-// }
 
 void	draw_player(void *param)
 {
@@ -81,48 +74,49 @@ void	draw_player(void *param)
 	ft_memset(player->map->pixels, 0,
 		player->map->width * player->map->height * 4);
 	size = player->size * player->size;
-	while (i < size)
-	{
-		c = color(0xFFFF00FF);
-		mlx_put_pixel(
-			player->map,
-			(i % player->size) + player->p0.x,
-			(i / player->size) + player->p0.y, c.value);
-		i++;
-	}
-	printf("=======>>> PLAYER POS [%.f][%.f]\n", player->p0.x, player->p0.y);
 
 	int p = 0;
-	t_mt2	rot = mt2_rotate(player->theta_dg);
+	float	obj_deg = player->theta_dg - 90;
+	t_mat2	rot = mat2_rotate(&obj_deg);
+	t_color	white = color(0xFFFFFFFF);
+	t_mat2	transl = mat2_translate(&player->p0);
+	t_mat2	mat = mat2_mat2_mult(&transl, &rot);
 
+	t_line	line_h = {{player->p0.x, 60},{player->p0.x, 500}, white, white};
+	t_line	line_v = {{60, player->p0.y},{500, player->p0.y}, white, white};
+	bresenham(player->map, &line_h);
+	bresenham(player->map, &line_v);
 
+	printf("[%.f][%.f][%.f]\n[%.f][%.f][%.f]\n[%.f][%.f][%.f]\n\n",
+		rot.i00, rot.i01, rot.i02,
+		rot.i10, rot.i11, rot.i12,
+		rot.i20, rot.i21, rot.i22);
 
+	printf("[%.f][%.f][%.f]\n[%.f][%.f][%.f]\n[%.f][%.f][%.f]\n\n",
+		transl.i00, transl.i01, transl.i02,
+		transl.i10, transl.i11, transl.i12,
+		transl.i20, transl.i21, transl.i22);
 
-
-	
-	t_mt2	trans = mt2_translate(&player->p0);
-	printf("[%.f][%.f][%.f]\n[%.f][%.f][%.f]\n[%.f][%.f][%.f]\n",
-		trans.i00, trans.i01, trans.i02,
-		trans.i10, trans.i11, trans.i12,
-		trans.i20, trans.i21, trans.i22);
-	t_fvec2	new_p[2];
+	t_vec2	new_p[2];
 	t_ivec2	int_p[2];
 	t_line	plr_line;
 	t_color plr_c = color(0xFFFF00FF);
-	printf(">> BF [%.f][%.f] [%.f][%.f]\n", player->geometry[5].x, player->geometry[5].y,
-		player->geometry[0].x, player->geometry[0].y);
+	// printf(">> BF [%.f][%.f] [%.f][%.f]\n", player->geometry[5].x, player->geometry[5].y,
+	// 	player->geometry[0].x, player->geometry[0].y);
 	while (p < 10)
 	{
-		new_p[0] = mult_fvec2_mt2(&player->geometry[p % 10], &trans);
-		new_p[1] = mult_fvec2_mt2(&player->geometry[(p + 1) % 10], &trans);
+		// new_p[0] = mat2_vec2_mult(&transl, &player->geometry[p % 10]);
+		// new_p[1] = mat2_vec2_mult(&transl, &player->geometry[(p + 1) % 10]);
+		new_p[0] = mat2_vec2_mult(&mat, &player->geometry[p % 10]);
+		new_p[1] = mat2_vec2_mult(&mat, &player->geometry[(p + 1) % 10]);
 		int_p[0] = (t_ivec2) {(int) new_p[0].x, (int) new_p[0].y};
 		int_p[1] = (t_ivec2) {(int) new_p[1].x, (int) new_p[1].y};
-		plr_line = (t_line) {int_p[0], plr_c, int_p[1], plr_c};
-		printf("{%d}[%.f][%.f] ", p, new_p[0].x, new_p[0].y);
+		plr_line = (t_line) {int_p[0], int_p[1], plr_c, plr_c};
+		// printf("{%d}[%.f][%.f] ", p, new_p[0].x, new_p[0].y);
 		bresenham(player->map, &plr_line);
 		p++;
 	}
-	printf("\n>> AF [%.f][%.f] [%.f][%.f]\n", new_p[0].x, new_p[0].y, new_p[1].x, new_p[1].y);
+	// printf("\n>> AF [%.f][%.f] [%.f][%.f]\n", new_p[0].x, new_p[0].y, new_p[1].x, new_p[1].y);
 
 
 
@@ -130,24 +124,24 @@ void	draw_player(void *param)
 		player->view->width * player->view->height * 4);
 	// draw_2drays(player);
 
-	t_line	line = org_arrow(&player->p0, &player->del, player->size / 2);
-	bresenham(player->map, &line);
+	// t_line	line = org_arrow(&player->p0, &player->del, player->size / 2);
+	// bresenham(player->map, &line);
 
-	float	rad = deg_rad(player->theta_dg);
+	// float	rad = deg_rad(player->theta_dg);
 
-	t_fvec2	subL = {cosf(M_PI_2 - rad), sinf(M_PI_2 - rad)};
-	t_line	sub_lineL = sub_arrow(&player->p0, &subL, &player->del, player->size / 2);
-	bresenham(player->map, &sub_lineL);
-	t_fvec2	subR = {-cosf(M_PI_2 - rad), -sinf(M_PI_2 - rad)};
-	t_line	sub_lineR = sub_arrow(&player->p0, &subR, &player->del, player->size / 2);
-	bresenham(player->map, &sub_lineR);
+	// t_vec2	subL = {cosf(M_PI_2 - rad), sinf(M_PI_2 - rad)};
+	// t_line	sub_lineL = sub_arrow(&player->p0, &subL, &player->del, player->size / 2);
+	// bresenham(player->map, &sub_lineL);
+	// t_vec2	subR = {-cosf(M_PI_2 - rad), -sinf(M_PI_2 - rad)};
+	// t_line	sub_lineR = sub_arrow(&player->p0, &subR, &player->del, player->size / 2);
+	// bresenham(player->map, &sub_lineR);
 
-	t_fvec2	subLS = {cosf(M_PI_2 - rad), sinf(M_PI_2 - rad)};
-	t_line	sub_lineLS = sub_arrowS(&player->p0, &subLS, &player->del, player->size / 2);
-	bresenham(player->map, &sub_lineLS);
-	t_fvec2	subRS = {-cosf(M_PI_2 - rad), -sinf(M_PI_2 - rad)};
-	t_line	sub_lineRS = sub_arrowS(&player->p0, &subRS, &player->del, player->size / 2);
-	bresenham(player->map, &sub_lineRS);
+	// t_vec2	subLS = {cosf(M_PI_2 - rad), sinf(M_PI_2 - rad)};
+	// t_line	sub_lineLS = sub_arrowS(&player->p0, &subLS, &player->del, player->size / 2);
+	// bresenham(player->map, &sub_lineLS);
+	// t_vec2	subRS = {-cosf(M_PI_2 - rad), -sinf(M_PI_2 - rad)};
+	// t_line	sub_lineRS = sub_arrowS(&player->p0, &subRS, &player->del, player->size / 2);
+	// bresenham(player->map, &sub_lineRS);
 
 		// orientation_vec(player, player->size / 2);
 
@@ -163,7 +157,7 @@ static void	draw_2drays(t_player *player)
 	int		mp;
 	int		dof;
 	// int		side;
-	// t_fvec2	f_rays;
+	// t_vec2	f_rays;
 	float	rx;
 	float	ry;
 	float	vx;
@@ -290,7 +284,7 @@ static void	draw_2drays(t_player *player)
 		ivec[1].y =  ry;
 		t_color	c0 = color(0xFF0000FF);
 		t_color	c1 = color(0xFF0000FF);
-		t_line	line = {ivec[0], c0, ivec[1], c1};
+		t_line	line = {ivec[0], ivec[1], c0, c1};
 		bresenham(player->map, &line); // DRAW 2D RAYS
 
 		// DRAW VIEW
@@ -338,7 +332,7 @@ static void	draw_2drays(t_player *player)
 // 	bresenham(plr->img, (t_line *) &line);
 // }
 
-t_line	org_arrow(t_fvec2 *ivec, t_fvec2 *idel, int org)
+t_line	org_arrow(t_vec2 *ivec, t_vec2 *idel, int org)
 {
 	const t_ivec2	ivec0 = {(int) ivec->x + org, (int) ivec->y + org};
 	const t_color	c0 = color(0xFFFF00FF);
@@ -346,11 +340,11 @@ t_line	org_arrow(t_fvec2 *ivec, t_fvec2 *idel, int org)
 	const t_ivec2	ivec1 = {(int) (ivec->x + org + 20 * idel->x), (int) (ivec->y + org + 20 * idel->y)};
 	const t_color	c1 = color(0xFFFF00FF);
 
-	const t_line	line = {(t_ivec2) ivec0, (t_color) c0, (t_ivec2) ivec1, (t_color) c1};
+	const t_line	line = {(t_ivec2) ivec0, (t_ivec2) ivec1, (t_color) c0, (t_color) c1};
 	return ((t_line) line);
 }
 
-t_line	sub_arrow(t_fvec2 *ivec, t_fvec2 *sub, t_fvec2 *idel, int org)
+t_line	sub_arrow(t_vec2 *ivec, t_vec2 *sub, t_vec2 *idel, int org)
 {
 	const t_ivec2	ivec0 = {(int) (ivec->x + org + 2 * sub->x), (int) (ivec->y + org + 2 * sub->y)};
 	const t_color	c0 = color(0xFFFF00FF);
@@ -358,11 +352,11 @@ t_line	sub_arrow(t_fvec2 *ivec, t_fvec2 *sub, t_fvec2 *idel, int org)
 	const t_ivec2	ivec1 = {(int) (ivec->x + org + 20 * idel->x), (int) (ivec->y + org + 20 * idel->y)};
 	const t_color	c1 = color(0xFFFF00FF);
 
-	const t_line	line = {(t_ivec2) ivec0, (t_color) c0, (t_ivec2) ivec1, (t_color) c1};
+	const t_line	line = {(t_ivec2) ivec0, (t_ivec2) ivec1, (t_color) c0, (t_color) c1};
 	return ((t_line) line);
 }
 
-t_line	sub_arrowS(t_fvec2 *ivec, t_fvec2 *sub, t_fvec2 *idel, int org)
+t_line	sub_arrowS(t_vec2 *ivec, t_vec2 *sub, t_vec2 *idel, int org)
 {
 	const t_ivec2	ivec0 = {(int) (ivec->x + org + 1 * sub->x), (int) (ivec->y + org + 1 * sub->y)};
 	const t_color	c0 = color(0xFFFF00FF);
@@ -370,6 +364,6 @@ t_line	sub_arrowS(t_fvec2 *ivec, t_fvec2 *sub, t_fvec2 *idel, int org)
 	const t_ivec2	ivec1 = {(int) (ivec->x + org + 20 * idel->x), (int) (ivec->y + org + 20 * idel->y)};
 	const t_color	c1 = color(0xFFFF00FF);
 
-	const t_line	line = {(t_ivec2) ivec0, (t_color) c0, (t_ivec2) ivec1, (t_color) c1};
+	const t_line	line = {(t_ivec2) ivec0, (t_ivec2) ivec1, (t_color) c0, (t_color) c1};
 	return ((t_line) line);
 }

@@ -6,37 +6,32 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:20:57 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/18 16:35:28 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:39:26 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GRAPH_FUNC_H
 # define GRAPH_FUNC_H
 
-#include <math.h>
-#include "graph_lib/graph_types.h"
 #include "MLX42/MLX42.h"
-#include "color/color.h"
+#include "graph_lib/graph_types.h"
 
-// t_ivec2	vec_float_to_int(t_fvec2 *fvec2);
-
+// ANGLE //
 float	deg_rad(int theta);
 float	fix_angle(float theta);
 
 // VECTOR 2D //
 
 // MATRIX 2D //
-t_mt2	mt2_diagonal(float x);
-t_mt2	mt2_translate(t_fvec2 *disp);
-t_mt2	mt2_rotate(float ang);
-t_mt2	mt2_rot_on_point(t_fvec2 *d, float ang);
+t_mat2	mat2_diagonal(float x);
+t_mat2	mat2_translate(t_vec2 *disp);
+t_mat2	mat2_rotate(float *ang);
 
 // TRANSFORM //
-t_fvec2	mult_fvec2_mt2(t_fvec2 *fv, t_mt2 *mt);
+t_vec2	mat2_vec2_mult(t_mat2 *mt, t_vec2 *fv);
+t_mat2	mat2_mat2_mult(t_mat2 *a, t_mat2 *b);
 
-
-
-// void	bresenham(mlx_image_t *img, t_fvec2 fv[2], t_color c);
+// DRAW //
 void	bresenham(mlx_image_t *img, t_line *line);
 
 #endif

@@ -6,29 +6,16 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:58:08 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/17 21:47:47 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:44:40 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "graph_lib/graph_func.h"
-#include "player/player.h"
 
 static void	init_ctrl_pts(t_ctrl *ctrl, t_ivec2 *iv0, t_ivec2 *iv1);
 static void	draw_line(mlx_image_t *img, t_line *line, t_ctrl *ctrl);
 static void	point_in_vp(mlx_image_t *img, t_line *line, t_ctrl *ctrl);
-
-// float	dist_2d(t_fvec2 *v0, t_fvec2 *v1)
-// {
-// 	return (sqrtf(powf(v1->x - v0->x, 2) + powf(v1->y - v0->y, 2)));
-// }
-
-// t_ivec2	vec_float_to_int(t_fvec2 *fvec2)
-// {
-// 	const t_ivec2	ivec2 = {fvec2->x, fvec2->y};
-
-// 	return (ivec2);
-// }
 
 void	bresenham(mlx_image_t *img, t_line *line)
 {

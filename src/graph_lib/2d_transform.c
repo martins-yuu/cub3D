@@ -6,80 +6,77 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:29:15 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/18 19:13:27 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:46:39 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
+
 #include "graph_lib/graph_func.h"
 
-// LEGAL?
-#include <stdio.h>
-// LEGAL?
-
-t_mt2	mt2_diagonal(float x)
+t_mat2	mat2_diagonal(float x)
 {
-	const t_mt2	mt = {
+	t_mat2	mat;
+
+	mat = (t_mat2)
+	{
 		x, 0.0, 0.0,
 		0.0, x, 0.0,
 		0.0, 0.0, x,
 	};
-
-	return (mt);
+	return (mat);
 }
 
-t_mt2	mt2_translate(t_fvec2 *disp)
+t_mat2	mat2_translate(t_vec2 *disp)
 {
-	const t_mt2	mt = {
+	t_mat2	mat;
+
+	mat = (t_mat2)
+	{
 		1.0, 0.0, disp->x,
 		0.0, 1.0, disp->y,
 		0.0, 0.0, 1.0,
-		};
-
-	return (mt);
-}
-
-t_mt2	mt2_rotate(float deg)
-{
-	const t_mt2	mt = {
-		cosf(deg), -sinf(deg), 0,
-		sinf(deg), cosf(deg), 0,
-		0, 0, 1,
 	};
-
-	return (mt);
+	return (mat);
 }
 
-t_mt2	mt2_rot_on_point(t_fvec2 *d, float deg)
+t_mat2	mat2_rotate(float *deg)
 {
 	float	rad;
-	t_mt2	mt;
+	t_mat2	mat;
 
-	rad = deg_rad(deg);
-	mt = (t_mt2) {cosf(rad), -sinf(rad), -d->x * cosf(rad) + d->y * sinf(rad) + d->x,
-		sinf(rad), cos(rad), -d->x * sinf(rad) - d->y * cosf(rad) + d->y,
+	rad = deg_rad(*deg);
+	mat = (t_mat2)
+	{
+		cosf(rad), sinf(rad), 0,
+		-sinf(rad), cosf(rad), 0,
 		0, 0, 1,
 	};
-	return (mt);
+	return (mat);
 }
 
-t_fvec2	mult_fvec2_mt2(t_fvec2 *fv, t_mt2 *mt)
+t_vec2	mat2_vec2_mult(t_mat2 *mat, t_vec2 *vec)
 {
-	t_fvec2	new;
+	t_vec2	new;
 
-	new = (t_fvec2) {mt->i00 * fv->x + mt->i01 * fv->y + mt->i02 * fv->w,
-		mt->i10 * fv->x + mt->i11 * fv->y + mt->i12 * fv->w,
-		mt->i20 * fv->x + mt->i21 * fv->y + mt->i22 * fv->w,
-	};
+	new.x = mat->i00 * vec->x + mat->i01 * vec->y + mat->i02 * vec->w;
+	new.y = mat->i10 * vec->x + mat->i11 * vec->y + mat->i12 * vec->w;
+	new.w = mat->i20 * vec->x + mat->i21 * vec->y + mat->i22 * vec->w;
 	return (new);
 }
 
-// t_fvec2	mt2_mult(t_mt2 *m0, t_mt2 *m1)
-// {
-// 	t_fvec2	new;
+t_mat2	mat2_mat2_mult(t_mat2 *a, t_mat2 *b)
+{
+	t_mat2	new;
 
-// 	new = (t_fvec2) {fv->x * mt->i00 + fv->y * mt->i10 + fv->w * mt->i20,
-// 		fv->x * mt->i01 + fv->x * mt->i11 + fv->x * mt->i21,
-// 		fv->x * mt->i02 + fv->x * mt->i12 + fv->x * mt->i22,
-// 	};
-// 	return (new);
-// }
+	new.i00 = a->i00 * b->i00 + a->i01 * b->i10 + a->i02 * b->i20;
+	new.i01 = a->i00 * b->i01 + a->i01 * b->i11 + a->i02 * b->i21;
+	new.i02 = a->i00 * b->i02 + a->i01 * b->i12 + a->i02 * b->i22;
+	new.i10 = a->i10 * b->i00 + a->i11 * b->i10 + a->i12 * b->i20;
+	new.i11 = a->i10 * b->i01 + a->i11 * b->i11 + a->i12 * b->i21;
+	new.i12 = a->i10 * b->i02 + a->i11 * b->i12 + a->i12 * b->i22;
+	new.i20 = a->i20 * b->i00 + a->i21 * b->i10 + a->i22 * b->i20;
+	new.i21 = a->i20 * b->i01 + a->i21 * b->i11 + a->i22 * b->i21;
+	new.i22 = a->i20 * b->i02 + a->i21 * b->i12 + a->i22 * b->i22;
+	return (new);
+}

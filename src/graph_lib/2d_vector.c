@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:56:02 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/18 15:29:00 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/19 15:16:10 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ t_ivec2	init_ivec2(int x, int y)
 	return (ivec2);
 }
 
-t_fvec2	init_fvec2(float x, float y)
+t_vec2	init_vec2(float x, float y)
 {
-	const t_fvec2	ivec2 = {x, y, 1,};
+	const t_vec2	ivec2 = {x, y, 1,};
 
 	return (ivec2);
 }

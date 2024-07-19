@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "map/map.h"
 #include "ctx/ctx.h"
-#include "color/color.h"
 #include "graph_lib/graph_func.h"
+#include "game/game.h"
 
 // #include "vector/bresenham.h"
 
@@ -48,14 +47,14 @@ void	init_map(t_map *mini_map, int width, int height)
 static void	draw_minimap(t_map *mini_map)
 {
 	uint32_t	i;
-	t_color		c[2];
+	t_color		wall_c;
+	t_color		space_c;
 
 	int	x, y;
 	i = 0;
 
-	// int	l = 0;
-	c[0] = color(0xf0f0f0FF);
-	c[1] = color(0x272727ff);
+	wall_c = color(S_WHT);
+	space_c = color(S_BLK);
 	x = 0;
 	y = 0;
 	while (y < mini_map->grid_size.y)
@@ -64,32 +63,13 @@ static void	draw_minimap(t_map *mini_map)
 		while (x < mini_map->grid_size.x)
 		{
 			if (mini_map->grid[y * mini_map->grid_size.x + x] == 1)
-				draw_cube(mini_map, x ,y, c[0]);
+				draw_cube(mini_map, x ,y, wall_c);
 			else
-				draw_cube(mini_map, x ,y, c[1]);
+				draw_cube(mini_map, x ,y, space_c);
 			x++;
 		}
 		y++;
 	}
-
-	t_ivec2	tri[3];
-	t_line	line[3];
-	t_color cc = color(0xFFFF00FF);
-
-	tri[0] = (t_ivec2) {100, 10};
-	tri[1] = (t_ivec2) {10, 200};
-	tri[2] = (t_ivec2) {200, 200};
-
-	line[0] = (t_line) {tri[0], cc, tri[1], cc};
-	line[1] = (t_line) {tri[1], cc, tri[2], cc};
-	line[2] = (t_line) {tri[2], cc, tri[0], cc};
-
-	bresenham(mini_map->img, &line[0]);
-	bresenham(mini_map->img, &line[1]);
-	bresenham(mini_map->img, &line[2]);
-
-	// t_fvec2 v0 = {100, 100};
-	// t_fvec2 v1 = {400, 400};
 }
 
 static void	draw_cube(t_map *mini_map, int x, int y, t_color c)

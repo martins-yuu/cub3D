@@ -6,9 +6,11 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:04:18 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/18 16:46:46 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:45:56 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <math.h>
 
 #include "graph_lib/graph_func.h"
 
