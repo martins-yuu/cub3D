@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "color/color.h"
 #include "ctx/ctx.h"
 #include "graph_lib/graph_func.h"
 #include "game/game.h"
@@ -83,7 +84,7 @@ static void	draw_cube(t_map *mini_map, int x, int y, t_color c)
 	while (p < nb_pixels)
 	{
 		if (p % size == 0 || p % size == (size -1) || p / size == 0 || p / size >= (size - 1))
-			c1 = color(0x646464FF);
+			c1 = color(D_GREY);
 		else
 			c1 = c;
 		mlx_put_pixel(mini_map->img, (p % 64) + x * size, (p / 64) + y * size, c1.value);

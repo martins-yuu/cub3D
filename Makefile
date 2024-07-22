@@ -6,7 +6,7 @@
 #    By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/03 18:20:34 by yuuko             #+#    #+#              #
-#    Updated: 2024/07/19 17:45:19 by tforster         ###   ########.fr        #
+#    Updated: 2024/07/21 17:09:34 by tforster         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,12 @@ SRCS		:= \
 	graph_lib/angle.c \
 	graph_lib/2d_transform.c \
 	graph_lib/bresenham.c \
+	menu/menu.c \
 	game/map.c \
 	game/player.c \
+	game/draw_player.c \
+	game/movement.c \
+	ray_casting/ray_casting.c \
 
 SRCS		:= $(addprefix $(SRC_DIR)/, $(SRCS))
 

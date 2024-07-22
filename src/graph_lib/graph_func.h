@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:20:57 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/19 17:39:26 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/21 19:57:48 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #include "graph_lib/graph_types.h"
 
 // ANGLE //
-float	deg_rad(int theta);
-float	fix_angle(float theta);
+float	deg_rad(float drg);
+float	fix_angle(float drg);
 
 // VECTOR 2D //
 

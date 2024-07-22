@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   angle.c                                            :+:      :+:    :+:   */
+/*   ray_casting.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 19:04:18 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/21 20:02:54 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/21 15:28:51 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/21 20:03:32 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
+#ifndef RAY_CASTING_H
+# define RAY_CASTING_H
 
-#include "graph_lib/graph_func.h"
+# include "game/game.h"
 
-float deg_rad(float drg)
-{
-	return (drg * M_PI/180.0);
-}
+void	ray_casting(t_player *player);
 
-float	fix_angle(float drg)
-{
-	if (drg > 359)
-		drg -= 360;
-	if (drg < 0)
-		drg += 360;
-	return (drg);
-}
+#endif
