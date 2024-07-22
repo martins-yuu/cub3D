@@ -17,7 +17,7 @@
 
 // #include "vector/bresenham.h"
 
-static void	draw_minimap(t_map *mini_map);
+// static void	draw_minimap(t_map *mini_map);
 static void	draw_cube(t_map *mini_map, int x, int y, t_color c);
 
 void	init_map(t_map *mini_map, int width, int height)
@@ -40,12 +40,13 @@ void	init_map(t_map *mini_map, int width, int height)
 	mini_map->cube_s = 64;
 	mini_map->player_pos0.x = 4;
 	mini_map->player_pos0.y = 4;
-	mini_map->img = ctx_img_new(width, height);
+	mini_map->img = ctx_img_new(512, 512);
 	ctx_img_display(mini_map->img, 0, 0);
-	draw_minimap(mini_map);
+	mini_map->img->instances->z = 1;
+	// draw_minimap(mini_map);
 }
 
-static void	draw_minimap(t_map *mini_map)
+ void	draw_minimap(t_map *mini_map)
 {
 	uint32_t	i;
 	t_color		wall_c;
@@ -55,8 +56,8 @@ static void	draw_minimap(t_map *mini_map)
 	i = 0;
 
 	// wall_c = color_hex_alpha(S_WHT);
-	wall_c = color_hex_alpha(S_WHT, 0XFF);
-	space_c = color_hex_alpha(S_BLK, A100);
+	wall_c = color_hex_alpha(S_WHT, A050);
+	space_c = color_hex_alpha(S_BLK, A050);
 	x = 0;
 	y = 0;
 	while (y < mini_map->grid_size.y)

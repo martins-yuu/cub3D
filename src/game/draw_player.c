@@ -6,20 +6,35 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:42:49 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/22 17:26:33 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 20:39:50 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "color/color.h"
 #include "ft_string.h"
 #include "graph_lib/graph_func.h"
+#include "graph_lib/graph_types.h"
 #include "ray_casting/ray_casting.h"
 #include "game/game.h"
+
+#include <stdio.h>	// DELETE THIS
+#include "MLX42/MLX42.h"
+#include "ctx/ctx.h"
 
 static void		transf_geometry(t_player *plr);
 static t_mat2	transf_matrix_org(t_player *plr);
 static void		draw_geometry(t_player *plr, t_mat2 *mat);
 static void		draw_xy_axis(t_player *plr);
+
+
+// typedef void (*mlx_resizefunc)(int32_t width, int32_t height, void* param);
+
+static void	resize(int32_t width, int32_t height, void* param)
+{
+	mlx_t *instance = ctx();
+	instance->width = 512;
+	instance->height = 320;
+}
 
 void	draw_player(void *param)
 {
@@ -33,6 +48,22 @@ void	draw_player(void *param)
 	transf_geometry(plr);
 	if (plr->to_draw.xy_axis)
 		draw_xy_axis(plr);
+
+	// TEST
+	mlx_t *instance = ctx();
+	if (plr->cam_view.x != instance->width || plr->cam_view.y != instance->height)
+	{
+		if (instance->width < 512 || instance->height < 320)
+		{
+			t_ivec2	can_view = {512, 320};
+			mlx_resize_hook(instance, resize, &can_view);
+			instance->width = 512;
+			instance->height = 320;
+		}
+		printf(">>> START WIDHT[%d] HEIGHT[%d]\n", instance->width, instance->height);
+		plr->cam_view = (t_ivec2){instance->width, instance->height};
+	}
+	// TEST
 }
 
 void	transf_geometry(t_player *plr)

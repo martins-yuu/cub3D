@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:05:06 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/22 16:26:02 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 20:44:38 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	draw_menu(t_menu *menu, t_map *map, t_player *plr)
 	menu->player = plr;
 	menu->menu_img = ctx_img_new(width, height);
 	ctx_img_display(menu->menu_img, 70, 100);
+	menu->menu_img->instances->z = 3;
 	ft_memset(menu->menu_img->pixels, 0x64, width * height * 4);
 	text_img[0] = mlx_put_string(ctx(), "PRESS <M> FOR MENU", 75, 100);
 	text_img[1] = mlx_put_string(ctx(), "PRESS <C> TO SHOW MINI MAP", 75, 120);

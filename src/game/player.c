@@ -16,6 +16,9 @@
 #include "graph_lib/graph_func.h"
 #include "game/game.h"
 
+#include "ctx/constants.h"
+#include "graph_lib/graph_types.h"
+
 static void	player_geometry(t_vec2 geometry[6]);
 static void player_coordinates(t_map *map, t_player *plr);
 static void	to_draw_elements(t_player *plr);
@@ -27,9 +30,13 @@ void	init_player(t_player *plr, t_map *map, int x0, int y0)
 	player_geometry(plr->geometry);
 	plr->map = ctx_img_new(x0, y0);
 	ctx_img_display(plr->map, 0, 0);
+	plr->map->instances->z = 2;
+	plr->cam_view = (t_ivec2){WIDTH, HEIGHT};
+
 	// plr->view = ctx_img_new(x0, 320);
 	plr->view = ctx_img_new(1024, 640);
-	ctx_img_display(plr->view, x0, 0);
+	ctx_img_display(plr->view, 0, 0);
+	plr->view->instances->z = 0;
 	to_draw_elements(plr);
 }
 
