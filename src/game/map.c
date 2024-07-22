@@ -54,8 +54,9 @@ static void	draw_minimap(t_map *mini_map)
 	int	x, y;
 	i = 0;
 
-	wall_c = color(S_WHT);
-	space_c = color(S_BLK);
+	// wall_c = color_hex_alpha(S_WHT);
+	wall_c = color_hex_alpha(S_WHT, 0XFF);
+	space_c = color_hex_alpha(S_BLK, A100);
 	x = 0;
 	y = 0;
 	while (y < mini_map->grid_size.y)
@@ -84,7 +85,7 @@ static void	draw_cube(t_map *mini_map, int x, int y, t_color c)
 	while (p < nb_pixels)
 	{
 		if (p % size == 0 || p % size == (size -1) || p / size == 0 || p / size >= (size - 1))
-			c1 = color(D_GREY);
+			c1 = color_hex_alpha(D_GREY, A100);
 		else
 			c1 = c;
 		mlx_put_pixel(mini_map->img, (p % 64) + x * size, (p / 64) + y * size, c1.value);

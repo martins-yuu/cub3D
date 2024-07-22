@@ -6,10 +6,11 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:42:49 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/21 20:03:32 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:26:33 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "color/color.h"
 #include "ft_string.h"
 #include "graph_lib/graph_func.h"
 #include "ray_casting/ray_casting.h"
@@ -62,7 +63,7 @@ void	draw_geometry(t_player *plr, t_mat2 *mat)
 	t_line	plr_line;
 	t_color	plr_c;
 
-	plr_c = color(YELLOW);
+	plr_c = color_hex_alpha(YELLOW, A100);
 	p = 0;
 	while (p < 10)
 	{
@@ -82,7 +83,7 @@ void	draw_xy_axis(t_player *plr)
 	t_line	line_h;
 	t_line	line_v;
 
-	c = color(WHITE);
+	c = color_hex_alpha(WHITE, A100);
 	line_h = (t_line){{plr->p0.x, 60}, {plr->p0.x, 500}, c, c};
 	line_v = (t_line){{60, plr->p0.y}, {500, plr->p0.y}, c, c};
 	bresenham(plr->map, &line_h);

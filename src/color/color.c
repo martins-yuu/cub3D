@@ -6,13 +6,18 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 05:14:23 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/15 15:17:13 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:01:36 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "color/color.h"
 #include <stdint.h>
 #include <stdlib.h>
+
+t_color	color_hex_alpha(t_rgb hex, t_alpha alpha)
+{
+	return ((t_color){.value = ((uint32_t)hex + (uint32_t)alpha)});
+}
 
 t_color	color(uint32_t v)
 {

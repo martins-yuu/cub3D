@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:07:27 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/21 22:12:27 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 16:23:16 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 typedef struct s_menu
 {
-	t_map		*map;
+	t_map		*mini_map;
 	t_player	*player;
 	mlx_image_t	*menu_img;
 }				t_menu;

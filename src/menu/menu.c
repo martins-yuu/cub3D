@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:05:06 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/21 22:10:42 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 16:26:02 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@
 #include "game/game.h"
 #include <stdbool.h>
 
-void	draw_menu(t_menu *menu, t_player *plr)
+void	draw_menu(t_menu *menu, t_map *map, t_player *plr)
 {
 	mlx_image_t	*text_img[5];
 	int width = 400;
 	int height = 100;
 
+	menu->mini_map = map;
 	menu->player = plr;
 	menu->menu_img = ctx_img_new(width, height);
 	ctx_img_display(menu->menu_img, 70, 100);
@@ -39,16 +40,21 @@ void	menu_keys(mlx_key_data_t data, void *param)
 {
 	t_menu		*menu;
 	t_player	*plr;
+	mlx_image_t	*mini_map;
 
 	menu = param;
 	plr = menu->player;
+	mini_map = menu->mini_map->img;
 	// t_player *plr = param;
 	if (data.key == MLX_KEY_ESCAPE && data.action == MLX_PRESS)
 		mlx_close_window(ctx());
 	if (data.key == MLX_KEY_X && data.action == MLX_PRESS)
 		plr->to_draw.xy_axis = (plr->to_draw.xy_axis == false);
 	if (data.key == MLX_KEY_C && data.action == MLX_PRESS)
+	{
 		plr->map->instances->enabled = (plr->map->instances->enabled == false);
+		mini_map->instances->enabled = plr->map->instances->enabled;
+	}
 	if (data.key == MLX_KEY_V && data.action == MLX_PRESS)
 		plr->to_draw.rays = (plr->to_draw.rays == false);
 

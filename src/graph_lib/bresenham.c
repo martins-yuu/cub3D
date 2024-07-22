@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:58:08 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/19 17:44:40 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:25:25 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	point_in_vp(mlx_image_t *img, t_line *line, t_ctrl *ctrl)
 	if ((3 <= line->ivec0.x && line->ivec0.x < (int) img->width - 3)
 		&& (3 <= line->ivec0.y && line->ivec0.y < (int) img->height - 3))
 	{
-		// color = intrplt_color(iv[0]->color, iv[1]->color, ctrl->step);
+		// color = intrplt_color_hex_alpha(iv[0]->color, iv[1]->color, ctrl->step);
 		// ctrl->step += (ctrl->step <= 1) * ctrl->dist + (ctrl->step > 1) * 1;
 		// mlx_put_pixel(img, line->ivec0->x, line->ivec0->y, 0xFF0000FF);
 		mlx_put_pixel(img, line->ivec0.x, line->ivec0.y, line->c0.value);

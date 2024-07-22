@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:38:13 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/21 20:41:37 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:07:53 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ray_casting(t_player *player)
 	int	total_rays = 257;
 	while (ray_nb < total_rays)
 	{
-		printf("%d[%.2f]\n", ray_nb, ray_theta_deg);
+		// printf("%d[%.2f]\n", ray_nb, ray_theta_deg);
 		ray_theta_rad = deg_rad(ray_theta_deg);
 		// VERTICAL
 		dof = 0;
@@ -175,7 +175,7 @@ void	ray_casting(t_player *player)
 		int	line_off = 320 - (line_h / 2);
 
 		// int	line_with = 8;
-		t_color	c = color(RED);
+		t_color	c = color_hex_alpha(RED, A100);
 		int	j = 0;
 		// int pixel_per_ray = 16;
 		// int pixel_per_ray = 8;
@@ -208,7 +208,7 @@ static void	draw_2drays(t_player *player, float rx, float ry)
 		ivec[0].y =  (player->p0.y);
 		ivec[1].x =  rx;
 		ivec[1].y =  ry;
-		t_color	c = color(RED);
+		t_color	c = color_hex_alpha(RED, A100);
 		t_line	line = {ivec[0], ivec[1], c, c};
 		bresenham(player->map, &line);
 	}

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:53:01 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/21 21:59:30 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 16:18:54 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	main(int argc, char **argv)
 	ctx();
 	init_map(&mini_map, 512, 512);
 
-	init_player(&mini_map, &player, 512, 512);
+	init_player(&player, &mini_map, 512, 512);
 
 	ctx_on_loop(movement, &player);
-	draw_menu(&menu, &player);
+	draw_menu(&menu, &mini_map, &player);
 	ctx_on_key(menu_keys, &menu);
 
 	mlx_loop(ctx());

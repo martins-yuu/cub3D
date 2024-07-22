@@ -20,13 +20,8 @@ static void	player_geometry(t_vec2 geometry[6]);
 static void player_coordinates(t_map *map, t_player *plr);
 static void	to_draw_elements(t_player *plr);
 
-void	init_player(t_map *map, t_player *plr, int x0, int y0)
+void	init_player(t_player *plr, t_map *map, int x0, int y0)
 {
-	// plr->p0.x = (float)(map->cube_s * map->player_pos0.x + map->cube_s / 2);
-	// plr->p0.y = (float)(map->cube_s * map->player_pos0.y + map->cube_s / 2);
-	// plr->dgr = 90;
-	// plr->disp.x = cosf(deg_rad(plr->dgr));
-	// plr->disp.y = -sinf(deg_rad(plr->dgr));
 	player_coordinates(map, plr);
 	plr->grid = map->grid;
 	player_geometry(plr->geometry);

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/21 21:40:46 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:15:07 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 typedef enum e_mov
 {
 	STEP = 5,
-	STRF_STEP = 2,
+	STRF_STEP= 2,
 	ANG = 2,
 	RIGHT = 1,
 	LEFT = -1,
@@ -68,13 +68,11 @@ typedef struct s_player
 	t_draw		to_draw;
 }				t_player;
 
-
-
 // MAP FUNCs //
 void	init_map(t_map *map, int width, int height);
 
 // PLAYER FUNCs //
-void	init_player(t_map *map, t_player *player, int x0, int y0);
+void	init_player(t_player *player, t_map *map, int x0, int y0);
 void	draw_player(void *param);
 
 // PLAYER MOVEMENT //
