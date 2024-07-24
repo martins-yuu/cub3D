@@ -19,22 +19,26 @@
 #include "ctx/constants.h"
 #include "graph_lib/graph_types.h"
 
-static void	player_geometry(t_vec2 geometry[6]);
+#include <stdio.h>	// DELETE THIS
+
+// static void	player_shape(t_vec2 geometry[6]);
 static void player_coordinates(t_map *map, t_player *plr);
 static void	to_draw_elements(t_player *plr);
 
-void	init_player(t_player *plr, t_map *map, int x0, int y0)
+void	init_player(t_player *plr, t_map *map)
 {
 	player_coordinates(map, plr);
-	plr->grid = map->grid;
-	player_geometry(plr->geometry);
-	plr->map = ctx_img_new(x0, y0);
+
+	plr->grid = map->grid;	// NEED THIS?
+	plr->dof = map->grid_size;
+
+	plr->map = ctx_img_new(map->img->width, map->img->height);
 	ctx_img_display(plr->map, 0, 0);
 	plr->map->instances->z = 2;
-	plr->cam_view = (t_ivec2){WIDTH, HEIGHT};
 
-	// plr->view = ctx_img_new(x0, 320);
-	plr->view = ctx_img_new(1024, 640);
+	// printf("PLAYER START VIEW [%d] AND NB OF RAYS[%d]\n", plr->cam_view.x, plr->cam_view.x/4 + 1);
+
+	plr->view = ctx_img_new(MAX_WIDTH, MAX_HEIGHT);
 	ctx_img_display(plr->view, 0, 0);
 	plr->view->instances->z = 0;
 	to_draw_elements(plr);
@@ -42,14 +46,16 @@ void	init_player(t_player *plr, t_map *map, int x0, int y0)
 
 static void player_coordinates(t_map *map, t_player *plr)
 {
-	plr->p0.x = (float)(map->cube_s * map->player_pos0.x + map->cube_s / 2);
-	plr->p0.y = (float)(map->cube_s * map->player_pos0.y + map->cube_s / 2);
+	// plr->p0.x = (float)(map->cube_s * map->player_pos0.x + map->cube_s / 2);
+	// plr->p0.y = (float)(map->cube_s * map->player_pos0.y + map->cube_s / 2);
+	plr->p0.x = (float)(CUBE_S * map->player_pos0.x + CUBE_S / 2);
+	plr->p0.y = (float)(CUBE_S * map->player_pos0.y + CUBE_S / 2);
 	plr->dgr = 90;
 	plr->disp.x = cosf(deg_rad(plr->dgr));
 	plr->disp.y = -sinf(deg_rad(plr->dgr));
 }
 
-static void	player_geometry(t_vec2 *geometry)
+void	player_shape(t_vec2 *geometry)
 {
 	geometry[0] = (t_vec2){0.0, 3.0, 1.0};
 	geometry[1] = (t_vec2){2.0, 2.0, 1.0};

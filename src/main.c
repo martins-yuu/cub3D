@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:53:01 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/22 20:22:20 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/24 16:39:11 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,20 @@ int	main(int argc, char **argv)
 	t_menu		menu;
 
 	mlx_t *instance = ctx();
-	printf(">>> START WIDHT[%d] HEIGHT[%d]\n", instance->width, instance->height);
+	printf(">>>>>>>> START WIDHT[%d] HEIGHT[%d]\n", instance->width, instance->height);
+	printf(">>>>>>>> NB RAYS [%d][%d]\n", instance->width / 4, instance->width % 4);
 
-	init_map(&mini_map, 512, 512);
-	init_player(&player, &mini_map, 512, 512);
+
+	init_map(&mini_map);
+	init_player(&player, &mini_map);
 
 	ctx_on_loop(movement, &player);
 	draw_minimap(&mini_map);
 	draw_menu(&menu, &mini_map, &player);
 	ctx_on_key(menu_keys, &menu);
 
-	printf("MINI_MAP[%d] MAP[%d] VIEW[%d] MENE[%d]\n",
-		mini_map.img->instances->z, player.map->instances->z, player.view->instances->z, menu.menu_img->instances->z);
+	// printf("MINI_MAP[%d] MAP[%d] VIEW[%d] MENE[%d]\n",
+	// 	mini_map.img->instances->z, player.map->instances->z, player.view->instances->z, menu.menu_img->instances->z);
 
 	mlx_loop(ctx());
 	mlx_terminate(ctx());
