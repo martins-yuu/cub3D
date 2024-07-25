@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:42:49 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/24 15:34:29 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/25 18:06:49 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@
 #include "MLX42/MLX42.h"
 #include "ctx/ctx.h"
 
-static void		transf_geometry(t_player *plr);
-static t_mat2	transf_matrix_org(t_player *plr);
+static void		transf_geometry(t_player *plr, t_vec2 p0);
+static t_mat2	transf_matrix_org(t_vec2 p0, float drg);
 static void		draw_geometry(t_player *plr, t_mat2 *mat);
-static void		draw_xy_axis(t_player *plr);
-
-
+static void		draw_xy_axis(mlx_image_t *map, t_vec2 p0, int cube_size);
 
 void	draw_player(void *param)
 {
@@ -36,29 +34,37 @@ void	draw_player(void *param)
 	plr = param;
 	ft_memset(plr->map->pixels, 0, plr->map->width * plr->map->height * 4);
 	ft_memset(plr->view->pixels, 0, plr->view->width * plr->view->height * 4);
-	ray_casting(plr);
-	transf_geometry(plr);
+
+	// Normalize coord for the minimap
+	int	cube_size;
+	cube_size = get_min_dim((plr->dof));
+	t_vec2 normal_p0;
+	normal_p0.x = ((float) cube_size / CUBE_S) * plr->p0.x;
+	normal_p0.y = ((float) cube_size / CUBE_S) * plr->p0.y;
+
+	ray_casting(plr, cube_size);
+	transf_geometry(plr, normal_p0);
 	if (plr->to_draw.xy_axis)
-		draw_xy_axis(plr);
+		draw_xy_axis(plr->map, normal_p0, cube_size);
 }
 
-void	transf_geometry(t_player *plr)
+static void	transf_geometry(t_player *plr, t_vec2 p0)
 {
 	t_mat2	mat;
 
-	mat = transf_matrix_org(plr);
+	mat = transf_matrix_org(p0, plr->dgr);
 	draw_geometry(plr, &mat);
 }
 
-static t_mat2	transf_matrix_org(t_player *plr)
+static t_mat2	transf_matrix_org(t_vec2 p0, float drg)
 {
 	float	obj_deg;
 	t_mat2	rotate;
 	t_mat2	translate;
 
-	obj_deg = plr->dgr - 90;
+	obj_deg = drg - 90;
 	rotate = mat2_rotate(&obj_deg);
-	translate = mat2_translate(&plr->p0);
+	translate = mat2_translate(&p0);
 	return (mat2_mat2_mult(&translate, &rotate));
 }
 
@@ -89,15 +95,18 @@ static void	draw_geometry(t_player *plr, t_mat2 *mat)
 	}
 }
 
-void	draw_xy_axis(t_player *plr)
+static void	draw_xy_axis(mlx_image_t *map, t_vec2 p0, int cube_size)
 {
 	t_color	c;
-	t_line	line_h;
 	t_line	line_v;
+	t_line	line_h;
+
+	int	v_len = map->width;
+	int	h_len = map->height;
 
 	c = color_hex_alpha(WHITE, A100);
-	line_h = (t_line){{plr->p0.x, 60}, {plr->p0.x, 500}, c, c};
-	line_v = (t_line){{60, plr->p0.y}, {500, plr->p0.y}, c, c};
-	bresenham(plr->map, &line_h);
-	bresenham(plr->map, &line_v);
+	line_v = (t_line){{30, p0.y}, {v_len - 30, p0.y}, c, c};
+	line_h = (t_line){{p0.x, 30}, {p0.x, h_len - 30}, c, c};
+	bresenham(map, &line_v);
+	bresenham(map, &line_h);
 }

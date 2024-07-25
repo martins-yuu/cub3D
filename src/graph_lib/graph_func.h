@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:20:57 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/21 19:57:48 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/25 18:03:57 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ float	fix_angle(float drg);
 // MATRIX 2D //
 t_mat2	mat2_diagonal(float x);
 t_mat2	mat2_translate(t_vec2 *disp);
+t_mat2	mat2_scale(t_vec2 *scl);
 t_mat2	mat2_rotate(float *ang);
 
 // TRANSFORM //

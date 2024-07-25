@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/24 18:53:05 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/25 18:12:42 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # define MAP_Y	8		//map height
 # define CUBE_S	64	//map cube size
 
-# define MINI_MAP_S	320
+// # define MINI_MAP_S	512
+# define MINI_MAP_S	480
 
 // PLAYER ATTRIBUTES //
 # define PLAYER_SIZE	7
@@ -72,6 +73,7 @@ typedef struct s_player
 
 // MAP FUNCs //
 void	init_map(t_map *map);
+int		get_min_dim(t_ivec2 vec);
 void	draw_minimap(t_map *mini_map);
 
 // PLAYER FUNCs //

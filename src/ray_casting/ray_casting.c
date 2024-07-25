@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:38:13 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/24 17:56:27 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/25 18:24:56 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@
 
 #include "ctx/ctx.h"
 #include "color/color.h"
+#include "game/game.h"
 #include "graph_lib/graph_func.h"
+#include "graph_lib/graph_types.h"
 #include "ray_casting/ray_casting.h"
 
-static void	draw_2drays(t_player *plr, float rx, float ry);
+static void	draw_2drays(t_player *plr, float rx, float ry, int cube_size);
 
-void	ray_casting(t_player *plr)
+void	ray_casting(t_player *plr, int cube_size)
 {
 	int		ray_nb;
 	// t_ivec2	ivec;
@@ -150,7 +152,7 @@ void	ray_casting(t_player *plr)
 			dist_h = dist_v;
 		}
 
-		draw_2drays(plr, rx, ry);
+		draw_2drays(plr, rx, ry, cube_size);
 
 		// DRAW VIEW
 		// printf("[%d]DIST_H[%.2f]", ray_nb, dist_h);
@@ -184,15 +186,39 @@ void	ray_casting(t_player *plr)
 	// printf("ANG[%f][%f]\n", plr->dgr, ray_theta_rad);
 }
 
-static void	draw_2drays(t_player *plr, float rx, float ry)
+static void	draw_2drays(t_player *plr, float rx, float ry, int cube_size)
 {
 	if (plr->to_draw.rays)
 	{
-		t_ivec2 ivec[2];
-		ivec[0].x =  (plr->p0.x);
-		ivec[0].y =  (plr->p0.y);
-		ivec[1].x =  rx;
-		ivec[1].y =  ry;
+		// t_ivec2 ivec[2];
+		// ivec[0].x =  (plr->p0.x);
+		// ivec[0].y =  (plr->p0.y);
+		// ivec[1].x =  rx;
+		// ivec[1].y =  ry;
+
+		// t_color	c = color_hex_alpha(RED, A100);
+		// t_line	line = {ivec[0], ivec[1], c, c};
+		// bresenham(plr->map, &line);
+
+		t_vec2 vec[2];
+		vec[0].x =  (plr->p0.x);
+		vec[0].y =  (plr->p0.y);
+		vec[1].x =  rx;
+		vec[1].y =  ry;
+
+		t_vec2 n_vec[2];
+		t_mat2 scale;
+		t_vec2	rate;
+		rate = (t_vec2){(float) cube_size / CUBE_S, (float) cube_size / CUBE_S};
+		scale = mat2_scale(&rate);
+
+		n_vec[0] = mat2_vec2_mult(&scale, &vec[0]);
+		n_vec[1] = mat2_vec2_mult(&scale, &vec[1]);
+
+		t_ivec2	ivec[2];
+		ivec[0] = (t_ivec2){(int) n_vec[0].x, (int) n_vec[0].y};
+		ivec[1] = (t_ivec2){(int) n_vec[1].x, (int) n_vec[1].y};
+
 		t_color	c = color_hex_alpha(RED, A100);
 		t_line	line = {ivec[0], ivec[1], c, c};
 		bresenham(plr->map, &line);

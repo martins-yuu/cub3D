@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:29:15 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/19 17:46:39 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/25 18:03:21 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,19 @@ t_mat2	mat2_translate(t_vec2 *disp)
 	{
 		1.0, 0.0, disp->x,
 		0.0, 1.0, disp->y,
+		0.0, 0.0, 1.0,
+	};
+	return (mat);
+}
+
+t_mat2	mat2_scale(t_vec2 *scl)
+{
+	t_mat2	mat;
+
+	mat = (t_mat2)
+	{
+		scl->x, 0.0, 0.0,
+		0.0, scl->y, 0.0,
 		0.0, 0.0, 1.0,
 	};
 	return (mat);

@@ -48,8 +48,8 @@ static void player_coordinates(t_map *map, t_player *plr)
 {
 	// plr->p0.x = (float)(map->cube_s * map->player_pos0.x + map->cube_s / 2);
 	// plr->p0.y = (float)(map->cube_s * map->player_pos0.y + map->cube_s / 2);
-	plr->p0.x = (float)(CUBE_S * map->player_pos0.x + CUBE_S / 2);
-	plr->p0.y = (float)(CUBE_S * map->player_pos0.y + CUBE_S / 2);
+	plr->p0.x = (float)(CUBE_S * (map->player_pos0.x + 0.5));
+	plr->p0.y = (float)(CUBE_S * (map->player_pos0.y + 0.5));
 	plr->dgr = 90;
 	plr->disp.x = cosf(deg_rad(plr->dgr));
 	plr->disp.y = -sinf(deg_rad(plr->dgr));
