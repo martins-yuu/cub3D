@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:42:49 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/25 18:06:49 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:43:42 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 static void		transf_geometry(t_player *plr, t_vec2 p0);
 static t_mat2	transf_matrix_org(t_vec2 p0, float drg);
-static void		draw_geometry(t_player *plr, t_mat2 *mat);
+static void		draw_geometry(t_player *plr, t_mat2 mat);
 static void		draw_xy_axis(mlx_image_t *map, t_vec2 p0, int cube_size);
 
 void	draw_player(void *param)
@@ -39,8 +39,10 @@ void	draw_player(void *param)
 	int	cube_size;
 	cube_size = get_min_dim((plr->dof));
 	t_vec2 normal_p0;
-	normal_p0.x = ((float) cube_size / CUBE_S) * plr->p0.x;
-	normal_p0.y = ((float) cube_size / CUBE_S) * plr->p0.y;
+	// normal_p0.x = ((float) cube_size / CUBE_S) * plr->p0.x;
+	// normal_p0.y = ((float) cube_size / CUBE_S) * plr->p0.y;
+	normal_p0.x = ((float) cube_size) * plr->p0.x;
+	normal_p0.y = ((float) cube_size) * plr->p0.y;
 
 	ray_casting(plr, cube_size);
 	transf_geometry(plr, normal_p0);
@@ -53,7 +55,7 @@ static void	transf_geometry(t_player *plr, t_vec2 p0)
 	t_mat2	mat;
 
 	mat = transf_matrix_org(p0, plr->dgr);
-	draw_geometry(plr, &mat);
+	draw_geometry(plr, mat);
 }
 
 static t_mat2	transf_matrix_org(t_vec2 p0, float drg)
@@ -63,12 +65,12 @@ static t_mat2	transf_matrix_org(t_vec2 p0, float drg)
 	t_mat2	translate;
 
 	obj_deg = drg - 90;
-	rotate = mat2_rotate(&obj_deg);
-	translate = mat2_translate(&p0);
-	return (mat2_mat2_mult(&translate, &rotate));
+	rotate = mat2_rotate(obj_deg);
+	translate = mat2_translate(p0);
+	return (mat2_mat2_mult(translate, rotate));
 }
 
-static void	draw_geometry(t_player *plr, t_mat2 *mat)
+static void	draw_geometry(t_player *plr, t_mat2 mat)
 {
 	int		p;
 	t_vec2	shape[10];
@@ -80,8 +82,8 @@ static void	draw_geometry(t_player *plr, t_mat2 *mat)
 	p = 0;
 	while (p < 10)
 	{
-		new_p[0] = mat2_vec2_mult(mat, &shape[p % 10]);
-		new_p[1] = mat2_vec2_mult(mat, &shape[(p + 1) % 10]);
+		new_p[0] = mat2_vec2_mult(mat, shape[p % 10]);
+		new_p[1] = mat2_vec2_mult(mat, shape[(p + 1) % 10]);
 		int_p[0] = (t_ivec2){(int) new_p[0].x, (int) new_p[0].y};
 		int_p[1] = (t_ivec2){(int) new_p[1].x, (int) new_p[1].y};
 		plr_line = (t_line)

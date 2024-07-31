@@ -40,6 +40,20 @@ int	*map_0(int *g_x, int *g_y)
 		1, 0, 0, 0, 0, 0, 0, 1,
 		1, 1, 1, 1, 1, 1, 1, 1,
 	};
+
+	// *g_x = 5;
+	// *g_y = 5;
+
+	// static int grid[5 * 5] =
+	// {
+	// 	1, 1, 1, 1, 1,
+	// 	1, 0, 0, 0, 1,
+	// 	1, 0, 0, 0, 1,
+	// 	1, 0, 0, 0, 1,
+	// 	1, 1, 1, 1, 1,
+	// };
+
+
 	return (grid);
 }
 
@@ -177,25 +191,46 @@ int	*map_3(int *g_x, int *g_y)
 	return (grid);
 }
 
+int	get_orientation(char ch)
+{
+	return ((ch == 'N') * 90 + (ch == 'S') * 270
+		+ (ch == 'E') * 0 + (ch == 'W') + 180);
+}
+
+t_map_ctx	map_ctx(void)
+{
+	static t_map_ctx map_ctx;
+	int	g_x;
+	int g_y;
+
+	if (map_ctx.grid == NULL)
+	{
+		map_ctx.grid = map_2(&g_x, &g_y);
+		map_ctx.grid_dim = (t_ivec2){g_x, g_y};
+		map_ctx.grid_p0 = (t_ivec2){4, 4};
+		map_ctx.orientation = get_orientation('N');
+		map_ctx.min_dim = get_min_dim(map_ctx.grid_dim);
+	}
+	return (map_ctx);
+}
+
 void	init_map(t_map *mini_map)
 {
 	int *grid;
 	int	g_x;
 	int g_y;
 
-	grid = map_2(&g_x, &g_y);
+	grid = map_0(&g_x, &g_y);
 
 	mini_map->grid = grid;
-	mini_map->grid_size.x = g_x;
-	mini_map->grid_size.y = g_y;
-	// mini_map->cube_s = 64;
+	mini_map->grid_dim.x = g_x;
+	mini_map->grid_dim.y = g_y;
 	mini_map->player_pos0.x = 4;
 	mini_map->player_pos0.y = 4;
-	// mini_map->img = ctx_img_new(g_x * CUBE_S, g_y * CUBE_S);
 	mini_map->img = ctx_img_new(MINI_MAP_S, MINI_MAP_S);
 	ctx_img_display(mini_map->img, 0, 0);
 	mini_map->img->instances->z = 1;
-	// draw_minimap(mini_map);
+	draw_minimap(mini_map);
 }
 
  void	draw_minimap(t_map *mini_map)
@@ -211,12 +246,12 @@ void	init_map(t_map *mini_map)
 	space_c = color_hex_alpha(S_BLK, A050);
 	x = 0;
 	y = 0;
-	while (y < mini_map->grid_size.y)
+	while (y < mini_map->grid_dim.y)
 	{
 		x = 0;
-		while (x < mini_map->grid_size.x)
+		while (x < mini_map->grid_dim.x)
 		{
-			if (mini_map->grid[y * mini_map->grid_size.x + x] == 1)
+			if (mini_map->grid[y * mini_map->grid_dim.x + x] == 1)
 				draw_cube(mini_map, x ,y, wall_c);
 			else
 				draw_cube(mini_map, x ,y, space_c);
@@ -230,26 +265,11 @@ static void	draw_cube(t_map *mini_map, int x, int y, t_color c)
 {
 	t_color	c1;
 	int	p;
-	// int	size = CUBE_S;
-	// int	nb_pixels = size * size;
 	int	size;
 	int	nb_pixels;
 
-
-	t_ivec2	dim;
-
-	// dim.x = 512 / mini_map->grid_size.x;
-	// dim.y = 512 / mini_map->grid_size.y;
-	// dim.x = MINI_MAP_S / mini_map->grid_size.x;
-	// dim.y = MINI_MAP_S / mini_map->grid_size.y;
-	// printf("DIM_X[%d] DIM_Y[%d]\n", dim.x, dim.y);
-
-	// nb_pixels = dim.x * dim.y;
-	// dim.x = dim.y;
-	// size = (dim.x <= dim.y) * dim.x + (dim.y < dim.x) * dim.y;
-	size = get_min_dim(mini_map->grid_size);
+	size = get_min_dim(mini_map->grid_dim);
 	nb_pixels = size * size;
-
 	p = 0;
 	while (p < nb_pixels)
 	{
@@ -262,11 +282,11 @@ static void	draw_cube(t_map *mini_map, int x, int y, t_color c)
 	}
 }
 
-int	get_min_dim(t_ivec2 vec)
+int	get_min_dim(t_ivec2 grid)
 {
 	t_ivec2	dim;
 	int		min_dim;
 
-	dim = (t_ivec2){MINI_MAP_S / vec.x, MINI_MAP_S / vec.y};
+	dim = (t_ivec2){MINI_MAP_S / grid.x, MINI_MAP_S / grid.y};
 	return ((dim.x <= dim.y) * dim.x + (dim.y < dim.x) * dim.y);
 }

@@ -21,7 +21,6 @@
 
 #include <stdio.h>	// DELETE THIS
 
-// static void	player_shape(t_vec2 geometry[6]);
 static void player_coordinates(t_map *map, t_player *plr);
 static void	to_draw_elements(t_player *plr);
 
@@ -30,7 +29,7 @@ void	init_player(t_player *plr, t_map *map)
 	player_coordinates(map, plr);
 
 	plr->grid = map->grid;	// NEED THIS?
-	plr->dof = map->grid_size;
+	plr->dof = map->grid_dim;
 
 	plr->map = ctx_img_new(map->img->width, map->img->height);
 	ctx_img_display(plr->map, 0, 0);
@@ -46,13 +45,21 @@ void	init_player(t_player *plr, t_map *map)
 
 static void player_coordinates(t_map *map, t_player *plr)
 {
-	// plr->p0.x = (float)(map->cube_s * map->player_pos0.x + map->cube_s / 2);
-	// plr->p0.y = (float)(map->cube_s * map->player_pos0.y + map->cube_s / 2);
-	plr->p0.x = (float)(CUBE_S * (map->player_pos0.x + 0.5));
-	plr->p0.y = (float)(CUBE_S * (map->player_pos0.y + 0.5));
+	// plr->p0.x = (float)(CUBE_S * (map->player_pos0.x + 0.5));
+	// plr->p0.y = (float)(CUBE_S * (map->player_pos0.y + 0.5));
+	plr->p0.x = (float)(map->player_pos0.x + 0.5);
+	plr->p0.y = (float)(map->player_pos0.y + 0.5);
+
 	plr->dgr = 90;
 	plr->disp.x = cosf(deg_rad(plr->dgr));
 	plr->disp.y = -sinf(deg_rad(plr->dgr));
+	plr->camera.x = 0.577 * sinf(deg_rad(plr->dgr));
+	plr->camera.y = -0.577 * cosf(deg_rad(plr->dgr));
+	// printf("[%.2f][%.2f][%.2f][%.2f]\n",
+	// 	0.66, sinf(deg_rad(plr->dgr)), 0.66 * sinf(deg_rad(plr->dgr)), plr->camera.x);
+	// printf("X DISP[%.2f] CAM[%.2f] | Y DISP[%.2f] CAM[%.2f]\n",
+	// 	plr->disp.x, plr->camera.x, plr->disp.y, plr->camera.y);
+
 }
 
 void	player_shape(t_vec2 *geometry)

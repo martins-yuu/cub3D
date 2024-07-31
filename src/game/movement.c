@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:18:24 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/24 18:36:39 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/27 16:13:36 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,13 @@ void	yaw(t_player *plr, t_mov direction)
 	rad = deg_rad(plr->dgr);
 	plr->disp.x = cosf(rad);
 	plr->disp.y = -sinf(rad);
+
+	// plr->camera.x += 0.66 * plr->disp.x;
+	// plr->camera.y += 0.66 * plr->disp.y;
+	// plr->camera.x -= (direction) * (plr->disp.y);
+	// plr->camera.y -= -(direction) * (plr->disp.x);
+	plr->camera.x = 0.66 * sinf(deg_rad(plr->dgr));
+	plr->camera.y = -0.66 * cosf(deg_rad(plr->dgr));
 }
 
 void	strafe(t_player *plr, t_mov direction)
@@ -90,4 +97,13 @@ static void	normal(t_player *plr, t_mov direction)
 {
 	plr->p0.x += (direction) * (STEP * plr->disp.x);
 	plr->p0.y += (direction) * (STEP * plr->disp.y);
+
+	// plr->camera.x += (direction) * plr->disp.x;
+	// plr->camera.y += (direction) * plr->disp.y;
+	// plr->camera.x -= (direction) * (plr->disp.y);
+	// plr->camera.y -= -(direction) * (plr->disp.x);
+	// plr->camera.x = 0.66 * sinf(deg_rad(plr->dgr));
+	// plr->camera.y = -0.66 * cosf(deg_rad(plr->dgr));
+
+
 }

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/25 18:12:42 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:43:09 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,14 @@
 // PLAYER ATTRIBUTES //
 # define PLAYER_SIZE	7
 
+# define STEP 0.05
+# define STRF_STEP 0.02
+
 // PLAYER MOVEMENT //
 typedef enum e_mov
 {
-	STEP = 5,
-	STRF_STEP = 2,
+	// STEP = 5,
+	// STRF_STEP = 2,
 	ANG = 2,
 	RIGHT = 1,
 	LEFT = -1,
@@ -41,11 +44,19 @@ typedef enum e_mov
 }			t_mov;
 
 // MAP TYPES //
+typedef struct s_map_ctx
+{
+	int			*grid;
+	t_ivec2		grid_dim;
+	t_ivec2		grid_p0;
+	int			orientation;
+	int			min_dim;
+}				t_map_ctx;
+
 typedef struct s_map
 {
 	int			*grid;
-	t_ivec2		grid_size;
-	// int			cube_s;
+	t_ivec2		grid_dim;
 	int			player_ang;
 	t_ivec2		player_pos0;
 	mlx_image_t	*img;
@@ -63,6 +74,7 @@ typedef struct s_player
 {
 	t_vec2		p0;
 	t_vec2		disp;
+	t_vec2		camera;
 	int			dgr;
 	mlx_image_t	*map;
 	mlx_image_t	*view;
@@ -72,14 +84,15 @@ typedef struct s_player
 }				t_player;
 
 // MAP FUNCs //
-void	init_map(t_map *map);
-int		get_min_dim(t_ivec2 vec);
-void	draw_minimap(t_map *mini_map);
+t_map_ctx	map_ctx(void);
+void		init_map(t_map *map);
+int			get_min_dim(t_ivec2 vec);
+void		draw_minimap(t_map *mini_map);
 
 // PLAYER FUNCs //
-void	init_player(t_player *player, t_map *map);
-void	player_shape(t_vec2 *geometry);
-void	draw_player(void *param);
+void		init_player(t_player *player, t_map *map);
+void		player_shape(t_vec2 *geometry);
+void		draw_player(void *param);
 
 // PLAYER MOVEMENT //
 void	movement(void *param);
