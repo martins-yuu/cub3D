@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:38:11 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/31 21:12:30 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/31 21:41:56 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static t_ray	vertical_ray(t_player *plr, t_trigo trg)
 	{
 		ray.dir.x = (int) plr->p0.x + 1;
 		ray.dir.y = (plr->p0.x - ray.dir.x) * trg.tan + plr->p0.y;
-		ray.step = (t_vec2) {1, -trg.tan};
+		ray.step = (t_vec2){1, -trg.tan};
 	} // LEFT
 	else if (trg.cos < -0.001)
 	{
 		ray.dir.x = (int) plr->p0.x - 0.0001;
 		ray.dir.y = (plr->p0.x - ray.dir.x) * trg.tan + plr->p0.y;
-		ray.step = (t_vec2) {-1, trg.tan};
+		ray.step = (t_vec2){-1, trg.tan};
 	} // RIGHT
 	else
 	{
@@ -68,10 +68,10 @@ static t_ray	get_vertical_dist(t_player *plr, t_ray ray, t_trigo trg)
 	while (ray.dof < plr->dof.x)
 	{
 		index = ((int) ray.dir.y) * plr->dof.x + (int) ray.dir.x;
-		if (index > 0 && index < (plr->dof.x * plr->dof.y) && plr->grid[index] == 1)
+		if (check_if_in_map(index, plr->dof, plr->grid))
 		{
 			ray.dof = plr->dof.x;
-			ray.dist = trg.cos * (ray.dir.x - plr->p0.x) - trg.sin * (ray.dir.y - plr->p0.y);
+			ray.dist = distance_to_wall(trg, plr->p0, ray.dir);
 		} // HIT
 		else
 		{
@@ -115,15 +115,15 @@ static t_ray	get_horizontal_dist(t_player *plr, t_ray ray, t_trigo trg)
 	while (ray.dof < plr->dof.y)
 	{
 		index = ((int) ray.dir.y) * plr->dof.x + (int) ray.dir.x;
-		if (index > 0 && index < (plr->dof.x * plr->dof.y) && plr->grid[index] == 1)
+		if (check_if_in_map(index, plr->dof, plr->grid))
 		{
 			ray.dof = plr->dof.y;
-			ray.dist = trg.cos * (ray.dir.x - plr->p0.x) - trg.sin * (ray.dir.y - plr->p0.y);
+			ray.dist = distance_to_wall(trg, plr->p0, ray.dir);
 		} // HIT
 		else
 		{
 			ray.dir = (t_vec2){ray.dir.x + ray.step.x, ray.dir.y + ray.step.y};
-			ray.dof +=1;
+			ray.dof += 1;
 		} // CHECK NEXT HORIZONTAL
 	}
 	return (ray);

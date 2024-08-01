@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:38:13 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/31 21:10:20 by tforster         ###   ########.fr       */
+/*   Updated: 2024/07/31 21:46:36 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,16 @@ void	ray_casting(t_player *plr, int cube_size)
 	{
 		t_ray	ray;
 		ray = dda(plr, ray_theta_dgr);
-
-		// draw_2drays(plr, ray.dir.x, ray.dir.y, cube_size);
 		draw_2drays(plr, ray.dir, cube_size);
-
 		// DRAW VIEW
-		// printf("[%d]DIST_H[%.2f]", ray_nb, dist_h);
-		float view_theta = fix_angle(( (float) plr->dgr - ray_theta_dgr));
+		float view_theta = fix_angle(((float) plr->dgr - ray_theta_dgr));
 		ray.dist = ray.dist * cosf(deg_rad(view_theta));	// FIX FOR FISHEYE
-		// printf("ANGs[%.2f][%.2f][%.2f]NEW[%.2f]\n",  plr->dgr, ray_theta_dgr, view_theta, ray.dist);
-
 		int line_h = (1 * instance->height) / (ray.dist);
 		if (line_h > instance->height)
 		{
 			line_h = instance->height;
 		}
 		int	line_off = instance->height / 2 - (line_h / 2);
-
 		t_color	c = color_hex_alpha(RED, A100);
 		int	j = 0;
 		int pixel_per_ray = 4;
@@ -69,18 +62,16 @@ void	ray_casting(t_player *plr, int cube_size)
 		ray_theta_dgr = fix_angle(ray_theta_dgr - ray_del);
 		ray_nb++;
 	}
-	// printf("ANG[%f][%f]\n", plr->dgr, ray_theta_rad);
 }
 
-// static void	draw_2drays(t_player *plr, float rx, float ry, int cube_size)
 static void	draw_2drays(t_player *plr, t_vec2 ray_dir, int cube_size)
 {
+	t_mat2	scale;
+	t_vec2	n_vec[2];
+	t_ivec2	pixel[2];
+
 	if (plr->to_draw.rays)
 	{
-		t_mat2 scale;
-		t_vec2 n_vec[2];
-		t_ivec2	pixel[2];
-
 		scale = mat2_scale((t_vec2){(float) cube_size, (float) cube_size});
 		n_vec[0] = mat2_vec2_mult(scale, plr->p0);
 		n_vec[1] = mat2_vec2_mult(scale, ray_dir);
