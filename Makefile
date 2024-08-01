@@ -6,7 +6,7 @@
 #    By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/03 18:20:34 by yuuko             #+#    #+#              #
-#    Updated: 2024/07/21 17:09:34 by tforster         ###   ########.fr        #
+#    Updated: 2024/07/31 21:00:18 by tforster         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,8 @@ SRCS		:= \
 	game/draw_player.c \
 	game/movement.c \
 	ray_casting/ray_casting.c \
+	ray_casting/dda.c \
+	ray_casting/dda_utils.c \
 
 SRCS		:= $(addprefix $(SRC_DIR)/, $(SRCS))
 

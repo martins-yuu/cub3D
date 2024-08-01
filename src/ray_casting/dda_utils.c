@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_casting.h                                      :+:      :+:    :+:   */
+/*   dda_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 15:28:51 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/31 17:45:07 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/31 20:59:54 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/31 21:10:46 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RAY_CASTING_H
-# define RAY_CASTING_H
+#include <math.h>
+#include "graph_lib/graph_func.h"
+#include "ray_casting/ray_types.h"
 
-# include "game/game.h"
-
-void	ray_casting(t_player *plr, int cube_size);
-
-#endif
+t_trigo	get_trigonometric_values(const float ray_theta_drg)
+{
+	return ((t_trigo){
+		cosf(deg_rad(ray_theta_drg)), sinf(deg_rad(ray_theta_drg)),
+		sinf(deg_rad(ray_theta_drg)) / cosf(deg_rad(ray_theta_drg)),
+		cosf(deg_rad(ray_theta_drg)) / sinf(deg_rad(ray_theta_drg)),
+	});
+}

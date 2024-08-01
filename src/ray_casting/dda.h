@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_casting.h                                      :+:      :+:    :+:   */
+/*   dda.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 15:28:51 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/31 17:45:07 by tforster         ###   ########.fr       */
+/*   Created: 2024/07/31 19:39:06 by tforster          #+#    #+#             */
+/*   Updated: 2024/07/31 21:11:06 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RAY_CASTING_H
-# define RAY_CASTING_H
+#ifndef DDA_H
+# define DDA_H
 
-# include "game/game.h"
+#include "game/game.h"
+#include "ray_casting/ray_types.h"
 
-void	ray_casting(t_player *plr, int cube_size);
+t_ray	dda(t_player *plr, const float ray_theta_drg);
+t_trigo	get_trigonometric_values(const float ray_theta_drg);
 
 #endif
