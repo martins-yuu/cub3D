@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 04:51:38 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/22 17:58:50 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/01 21:52:02 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef enum e_rgb
 	GREEN = 0x00FF0000,
 	YELLOW = 0xFFFF0000,
 	RED = 0xFF000000,
+	D_RED = 0xBF000000,
 	MAGENT = 0xFF000000,
 	PURPLE = 0x91199E00,
 	ORANGE = 0xFF7F0000,

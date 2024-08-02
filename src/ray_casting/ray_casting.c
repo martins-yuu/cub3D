@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:38:13 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/31 21:46:36 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/01 21:58:23 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ void	ray_casting(t_player *plr, int cube_size)
 	float		ray_del;
 	float		ray_theta_dgr;
 
-	total_rays = (instance->width - 4) / 4;
+	int			pixels = 1;
+	total_rays = instance->width / pixels;
 	ray_del = 60.0 / total_rays;
 	ray_theta_dgr = fix_angle(plr->dgr + 30);
 	ray_nb = 0;
-	while (ray_nb <= total_rays)
+	while (ray_nb < total_rays)
 	{
 		t_ray	ray;
 		ray = dda(plr, ray_theta_dgr);
@@ -46,9 +47,11 @@ void	ray_casting(t_player *plr, int cube_size)
 			line_h = instance->height;
 		}
 		int	line_off = instance->height / 2 - (line_h / 2);
-		t_color	c = color_hex_alpha(RED, A100);
+		t_color	c;
+		// c = color_hex_alpha(RED, A100);
+		c = ray.color;
 		int	j = 0;
-		int pixel_per_ray = 4;
+		int pixel_per_ray = pixels;
 		while (j < line_h)
 		{
 			int	i = 0;

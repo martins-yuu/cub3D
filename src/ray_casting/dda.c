@@ -6,11 +6,12 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:38:11 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/01 21:04:01 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/01 21:54:19 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ray_casting/dda.h"
+#include "color/color.h"
 
 static t_ray	vertical_ray(t_player *plr, t_trigo trg);
 static t_ray	get_vertical_dist(t_player *plr, t_ray ray, t_trigo trg);
@@ -31,7 +32,10 @@ t_ray	dda(t_player *plr, const float ray_theta_drg)
 		ray_h.dir.x = ray_v.dir.x;
 		ray_h.dir.y = ray_v.dir.y;
 		ray_h.dist = ray_v.dist;
+		ray_h.color = color_hex_alpha(RED, A100);
 	}
+	else
+		ray_h.color = color_hex_alpha(D_RED, A100);
 	return (ray_h);
 }
 
