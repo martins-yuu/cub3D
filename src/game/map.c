@@ -12,7 +12,8 @@
 
 #include "color/color.h"
 #include "ctx/ctx.h"
-#include "graph_lib/graph_func.h"
+#include "ctx/constants.h"
+// #include "graph_lib/graph_func.h"
 #include "game/game.h"
 #include "graph_lib/graph_types.h"
 
@@ -229,7 +230,7 @@ void	init_map(t_map *mini_map)
 	mini_map->player_pos0.y = 4;
 	mini_map->img = ctx_img_new(MINI_MAP_S, MINI_MAP_S);
 	ctx_img_display(mini_map->img, 0, 0);
-	mini_map->img->instances->z = 1;
+	mini_map->img->instances->z = Z_MINI_MAP;
 	draw_minimap(mini_map);
 }
 

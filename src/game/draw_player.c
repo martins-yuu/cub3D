@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:42:49 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/30 18:43:42 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/01 21:22:25 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ void	draw_player(void *param)
 	int	cube_size;
 	cube_size = get_min_dim((plr->dof));
 	t_vec2 normal_p0;
-	// normal_p0.x = ((float) cube_size / CUBE_S) * plr->p0.x;
-	// normal_p0.y = ((float) cube_size / CUBE_S) * plr->p0.y;
 	normal_p0.x = ((float) cube_size) * plr->p0.x;
 	normal_p0.y = ((float) cube_size) * plr->p0.y;
 

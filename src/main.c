@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:53:01 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/26 17:40:51 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/01 21:08:41 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int	main(int argc, char **argv)
 
 	ctx();
 	map_ctx();
-	// printf(">>>>>>>> START WIDHT[%d] HEIGHT[%d]\n", instance->width, instance->height);
-	// printf(">>>>>>>> NB RAYS [%d][%d]\n", instance->width / 4, instance->width % 4);
 
 
 	init_map(&mini_map);
@@ -45,8 +43,6 @@ int	main(int argc, char **argv)
 	ctx_on_loop(movement, &player);
 	ctx_on_key(menu_keys, &menu);
 
-	// printf("MINI_MAP[%d] MAP[%d] VIEW[%d] MENE[%d]\n",
-	// 	mini_map.img->instances->z, player.map->instances->z, player.view->instances->z, menu.menu_img->instances->z);
 
 	mlx_loop(ctx());
 	mlx_terminate(ctx());

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:18:24 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/27 16:13:36 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/01 21:19:05 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 static void	yaw(t_player *plr, t_mov direction);
 static void	strafe(t_player *plr, t_mov direction);
 static void	normal(t_player *plr, t_mov direction);
-
-// typedef void (*mlx_resizefunc)(int32_t width, int32_t height, void* param);
 
 static void	resize(int32_t width, int32_t height, void* param)
 {
@@ -50,24 +48,6 @@ void	movement(void *param)
 	if (mlx_is_key_down(ctx(), MLX_KEY_S))
 		normal(plr, DOWN);
 	draw_player(plr);
-
-	// TEST
-	// mlx_t *instance = ctx();
-	// if (plr->cam_view.x != instance->width || plr->cam_view.y != instance->height)
-	// {
-	// 	if (instance->width < 512 || instance->height < 320)
-	// 	{
-	// 		t_ivec2	can_view = {512, 320};
-	// 		mlx_resize_hook(instance, resize, &can_view);
-	// 		instance->width = 512;
-	// 		instance->height = 320;
-	// 	}
-		// printf(">> START WIDHT[%d] HEIGHT[%d]\n", instance->width, instance->height);
-		// printf(">> NB RAYS [%d][%d]\n", instance->width / 4, instance->width % 4);
-	// 	plr->cam_view = (t_ivec2){instance->width, instance->height};
-	// }
-	// TEST
-
 }
 
 void	yaw(t_player *plr, t_mov direction)
@@ -78,13 +58,6 @@ void	yaw(t_player *plr, t_mov direction)
 	rad = deg_rad(plr->dgr);
 	plr->disp.x = cosf(rad);
 	plr->disp.y = -sinf(rad);
-
-	// plr->camera.x += 0.66 * plr->disp.x;
-	// plr->camera.y += 0.66 * plr->disp.y;
-	// plr->camera.x -= (direction) * (plr->disp.y);
-	// plr->camera.y -= -(direction) * (plr->disp.x);
-	plr->camera.x = 0.66 * sinf(deg_rad(plr->dgr));
-	plr->camera.y = -0.66 * cosf(deg_rad(plr->dgr));
 }
 
 void	strafe(t_player *plr, t_mov direction)
@@ -97,13 +70,4 @@ static void	normal(t_player *plr, t_mov direction)
 {
 	plr->p0.x += (direction) * (STEP * plr->disp.x);
 	plr->p0.y += (direction) * (STEP * plr->disp.y);
-
-	// plr->camera.x += (direction) * plr->disp.x;
-	// plr->camera.y += (direction) * plr->disp.y;
-	// plr->camera.x -= (direction) * (plr->disp.y);
-	// plr->camera.y -= -(direction) * (plr->disp.x);
-	// plr->camera.x = 0.66 * sinf(deg_rad(plr->dgr));
-	// plr->camera.y = -0.66 * cosf(deg_rad(plr->dgr));
-
-
 }

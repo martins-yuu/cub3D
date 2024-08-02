@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/30 18:43:09 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/01 21:07:01 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 # include "graph_lib/graph_types.h"
 
 // MAP ATTRIBUTES //
-# define MAP_X	8		//map width
-# define MAP_Y	8		//map height
-# define CUBE_S	64	//map cube size
 
 // # define MINI_MAP_S	512
 # define MINI_MAP_S	480
@@ -28,14 +25,11 @@
 // PLAYER ATTRIBUTES //
 # define PLAYER_SIZE	7
 
+// PLAYER MOVEMENT //
 # define STEP 0.05
 # define STRF_STEP 0.02
-
-// PLAYER MOVEMENT //
 typedef enum e_mov
 {
-	// STEP = 5,
-	// STRF_STEP = 2,
 	ANG = 2,
 	RIGHT = 1,
 	LEFT = -1,

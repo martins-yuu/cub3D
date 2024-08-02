@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:11:43 by yuuko             #+#    #+#             */
-/*   Updated: 2024/07/24 18:44:36 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/01 21:10:54 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@
 # define MAX_HEIGHT 995
 
 // Images draw order
-# define MINI_MAP 4
+# define Z_VIEW 0
+# define Z_MINI_MAP 1
+# define Z_MINI_PLAYER 2
+# define Z_MENU 3
+
 // TODO, other images
 
 #endif
