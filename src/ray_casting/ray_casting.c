@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:38:13 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/01 21:58:23 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:30:21 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ void	ray_casting(t_player *plr, int cube_size)
 		{
 			line_h = instance->height;
 		}
-		int	line_off = instance->height / 2 - (line_h / 2);
+		int	line_offset = instance->height / 2 - (line_h / 2);
 		t_color	c;
 		// c = color_hex_alpha(RED, A100);
 		c = ray.color;
 		int	j = 0;
-		int pixel_per_ray = pixels;
+		// int pixels = pixels;
 		while (j < line_h)
 		{
 			int	i = 0;
-			while (i < pixel_per_ray)
+			while (i < pixels)
 			{
-				mlx_put_pixel(plr->view, ray_nb * pixel_per_ray + i, line_off + j, c.value);
+				mlx_put_pixel(plr->view, ray_nb * pixels + i, line_offset + j, c.value);
 				i++;
 			}
 			j++;

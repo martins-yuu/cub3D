@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/01 21:07:01 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:31:29 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_map
 typedef struct s_draw
 {
 	bool	xy_axis;
-	bool	player;
 	bool	rays;
 }			t_draw;
 

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:11:43 by yuuko             #+#    #+#             */
-/*   Updated: 2024/08/01 21:10:54 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 14:42:03 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 # define HEIGHT 640
 # define MAX_WIDTH 1920
 # define MAX_HEIGHT 995
+
+// Menu Size //
+# define MENU_WIDTH 400
+# define MENU_HEIGHT 100
 
 // Images draw order
 # define Z_VIEW 0

@@ -67,5 +67,5 @@ static void	to_draw_elements(t_player *plr)
 {
 	plr->to_draw.rays = false;
 	plr->to_draw.xy_axis = false;
-	plr->to_draw.player = true;
+	plr->map->enabled = false;
 }
