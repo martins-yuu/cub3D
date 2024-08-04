@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:11:43 by yuuko             #+#    #+#             */
-/*   Updated: 2024/08/04 14:42:03 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 16:12:51 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define Z_MINI_MAP 1
 # define Z_MINI_PLAYER 2
 # define Z_MENU 3
+# define Z_IMG 4
 
 // TODO, other images
 

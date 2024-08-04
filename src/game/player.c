@@ -31,13 +31,13 @@ void	init_player(t_player *plr, t_map *map)
 	plr->grid = map->grid;	// NEED THIS?
 	plr->dof = map->grid_dim;
 
-	plr->map = ctx_img_new(map->img->width, map->img->height);
-	ctx_img_display(plr->map, 0, 0);
-	plr->map->instances->z = Z_MINI_PLAYER;
+	plr->shape = ctx_img_new(map->img->width, map->img->height);
+	ctx_img_display(plr->shape, 0, 0);
+	plr->shape->instances->z = Z_MINI_PLAYER;
+	to_draw_elements(plr);
 	plr->view = ctx_img_new(MAX_WIDTH, MAX_HEIGHT);
 	ctx_img_display(plr->view, 0, 0);
 	plr->view->instances->z = Z_VIEW;
-	to_draw_elements(plr);
 }
 
 static void player_coordinates(t_map *map, t_player *plr)
@@ -67,5 +67,5 @@ static void	to_draw_elements(t_player *plr)
 {
 	plr->to_draw.rays = false;
 	plr->to_draw.xy_axis = false;
-	plr->map->enabled = false;
+	plr->shape->enabled = false;
 }

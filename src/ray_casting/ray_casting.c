@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:38:13 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 13:30:21 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 16:06:03 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,13 @@ static void	draw_2drays(t_player *plr, t_vec2 ray_dir, int cube_size);
 
 void	ray_casting(t_player *plr, int cube_size)
 {
-	const mlx_t	*instance = ctx();
 	int			ray_nb;
 	int			total_rays;
 	float		ray_del;
 	float		ray_theta_dgr;
 
 	int			pixels = 1;
-	total_rays = instance->width / pixels;
+	total_rays = ctx()->width / pixels;
 	ray_del = 60.0 / total_rays;
 	ray_theta_dgr = fix_angle(plr->dgr + 30);
 	ray_nb = 0;
@@ -41,12 +40,12 @@ void	ray_casting(t_player *plr, int cube_size)
 		// DRAW VIEW
 		float view_theta = fix_angle(((float) plr->dgr - ray_theta_dgr));
 		ray.dist = ray.dist * cosf(deg_rad(view_theta));	// FIX FOR FISHEYE
-		int line_h = (1 * instance->height) / (ray.dist);
-		if (line_h > instance->height)
+		int line_h = (1 * ctx()->height) / (ray.dist);
+		if (line_h > ctx()->height)
 		{
-			line_h = instance->height;
+			line_h = ctx()->height;
 		}
-		int	line_offset = instance->height / 2 - (line_h / 2);
+		int	line_offset = ctx()->height / 2 - (line_h / 2);
 		t_color	c;
 		// c = color_hex_alpha(RED, A100);
 		c = ray.color;
@@ -82,6 +81,6 @@ static void	draw_2drays(t_player *plr, t_vec2 ray_dir, int cube_size)
 		pixel[1] = (t_ivec2){(int) n_vec[1].x, (int) n_vec[1].y};
 		t_color	c = color_hex_alpha(RED, A100);
 		t_line	line = {pixel[0], pixel[1], c, c};
-		bresenham(plr->map, &line);
+		bresenham(plr->shape, &line);
 	}
 }

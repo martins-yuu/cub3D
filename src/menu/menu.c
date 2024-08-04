@@ -6,12 +6,13 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:05:06 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 15:22:57 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 16:30:41 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include <stdint.h>
 // #include <stdint.h>
+#include <stdint.h>
 #include <stdio.h>
 // #include "MLX42/MLX42.h"
 // #include "color/color.h"
@@ -54,7 +55,7 @@ static void	assign_text(mlx_image_t *opts[MENU_OPTS])
 	}
 }
 
-void	menu_position(int width, int height, void *param)
+void	menu_position(const int width, const int height, void *param)
 {
 	int				i;
 	const t_menu	*menu = param;
@@ -77,33 +78,18 @@ void	menu_position(int width, int height, void *param)
 
 void	menu_keys(mlx_key_data_t data, void *param)
 {
-	t_menu		*menu;
-	t_player	*plr;
-	mlx_image_t	*mini_map;
+	int				i;
+	const t_menu	*menu = param;
 
-	menu = param;
-	plr = menu->player;
-	mini_map = menu->mini_map->img;
+	// printf("DELTA_TIME [%f]\n", ctx()->delta_time);
 	if (data.key == MLX_KEY_ESCAPE && data.action == MLX_PRESS)
 		mlx_close_window(ctx());
 	if (data.key == MLX_KEY_M && data.action == MLX_PRESS)
 	{
 		menu->menu_img->enabled = (menu->menu_img->enabled == false);
-		menu->opts[0]->enabled = menu->menu_img->enabled;
-		menu->opts[1]->enabled = menu->menu_img->enabled;
-		menu->opts[2]->enabled = menu->menu_img->enabled;
-		menu->opts[3]->enabled = menu->menu_img->enabled;
-		menu->opts[4]->enabled = menu->menu_img->enabled;
+		i = 0;
+		while (i < MENU_OPTS)
+			menu->opts[i++]->enabled = menu->menu_img->enabled;
 	}
-	if (data.key == MLX_KEY_X && data.action == MLX_PRESS)
-		if (mini_map->enabled)
-			plr->to_draw.xy_axis = (plr->to_draw.xy_axis == false);
-	if (data.key == MLX_KEY_C && data.action == MLX_PRESS)
-	{
-		plr->map->enabled = (plr->map->enabled == false);
-		mini_map->enabled = plr->map->enabled;
-	}
-	if (data.key == MLX_KEY_V && data.action == MLX_PRESS)
-		if (mini_map->enabled)
-			plr->to_draw.rays = (plr->to_draw.rays == false);
+	minimap_opts(data, menu->player, menu->mini_map->img);
 }

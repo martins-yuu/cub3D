@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:42:49 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/01 21:22:25 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:55:29 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	draw_player(void *param)
 	t_player	*plr;
 
 	plr = param;
-	ft_memset(plr->map->pixels, 0, plr->map->width * plr->map->height * 4);
+	ft_memset(plr->shape->pixels, 0, plr->shape->width * plr->shape->height * 4);
 	ft_memset(plr->view->pixels, 0, plr->view->width * plr->view->height * 4);
 
 	// Normalize coord for the minimap
@@ -45,7 +45,8 @@ void	draw_player(void *param)
 	ray_casting(plr, cube_size);
 	transf_geometry(plr, normal_p0);
 	if (plr->to_draw.xy_axis)
-		draw_xy_axis(plr->map, normal_p0, cube_size);
+		draw_xy_axis(plr->shape, normal_p0, cube_size);
+	// printf("DELTA[%f] PS [%f]\n", ctx()->delta_time, 1/ctx()->delta_time);
 }
 
 static void	transf_geometry(t_player *plr, t_vec2 p0)
@@ -90,7 +91,7 @@ static void	draw_geometry(t_player *plr, t_mat2 mat)
 			color_hex_alpha(YELLOW, A100),
 			color_hex_alpha(YELLOW, A100),
 		};
-		bresenham(plr->map, &plr_line);
+		bresenham(plr->shape, &plr_line);
 		p++;
 	}
 }

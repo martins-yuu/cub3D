@@ -6,29 +6,32 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:18:24 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/01 21:19:05 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:39:40 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 
+#include <stdlib.h>
+
 #include "ctx/ctx.h"
 #include "graph_lib/graph_func.h"
 #include "game/game.h"
+#include "graph_lib/graph_types.h"
 
+#include <stdint.h>
 #include <stdio.h>	// DELETE THIS
 
 static void	yaw(t_player *plr, t_mov direction);
 static void	strafe(t_player *plr, t_mov direction);
 static void	normal(t_player *plr, t_mov direction);
 
-static void	resize(int32_t width, int32_t height, void* param)
-{
-	mlx_t *instance = ctx();
-	instance->width = 512;
-	instance->height = 320;
-}
-
+// static void	resize(int32_t width, int32_t height, void* param)
+// {
+// 	mlx_t *instance = ctx();
+// 	instance->width = 512;
+// 	instance->height = 320;
+// }
 
 void	movement(void *param)
 {
@@ -54,7 +57,7 @@ void	yaw(t_player *plr, t_mov direction)
 {
 	float	rad;
 
-	plr->dgr = fix_angle(plr->dgr - (direction) * ANG);
+	plr->dgr = fix_angle(plr->dgr - (direction) * 125 * ctx()->delta_time);
 	rad = deg_rad(plr->dgr);
 	plr->disp.x = cosf(rad);
 	plr->disp.y = -sinf(rad);
@@ -62,12 +65,42 @@ void	yaw(t_player *plr, t_mov direction)
 
 void	strafe(t_player *plr, t_mov direction)
 {
-	plr->p0.x -= (direction) * (STRF_STEP * plr->disp.y);
-	plr->p0.y -= -(direction) * (STRF_STEP * plr->disp.x);
+	const t_ivec2	grid_pos = (t_ivec2){(int) plr->p0.x, (int) plr->p0.y};
+	t_vec2	offset;
+
+	offset = (t_vec2){
+		(plr->disp.x < 0) * (-0.2) + (plr->disp.x > 0) * 0.2,
+		(plr->disp.y < 0) * (-0.2) + (plr->disp.y > 0) * 0.2,
+	};
+	const t_vec2	delta = (t_vec2)
+	{
+		plr->p0.x - (direction) * offset.y,
+		plr->p0.y + (direction) * offset.x
+	};
+
+	if (plr->grid[grid_pos.y * plr->dof.x + (int)delta.x] == 0 && plr->grid[(int)delta.y * plr->dof.x + grid_pos.x] == 0)
+	{
+		plr->p0.x -= (direction) * (1.5625 * ctx()->delta_time * plr->disp.y);
+		plr->p0.y -= -(direction) * (1.5625 * ctx()->delta_time * plr->disp.x);
+	}
+	// if (plr->grid[delta.y * plr->dof.x + grid_pos.x] == 0)
 }
 
 static void	normal(t_player *plr, t_mov direction)
 {
-	plr->p0.x += (direction) * (STEP * plr->disp.x);
-	plr->p0.y += (direction) * (STEP * plr->disp.y);
+	const t_ivec2	grid_pos = (t_ivec2){(int) plr->p0.x, (int) plr->p0.y};
+	const t_vec2	offset = (t_vec2){
+		(plr->disp.x <= 0) * (-0.2) + (plr->disp.x > 0) * 0.2,
+		(plr->disp.y <= 0) * (-0.2) + (plr->disp.y > 0) * 0.2,
+	};
+	const t_vec2	delta = (t_vec2)
+	{
+		plr->p0.x + (direction) * offset.x,
+		plr->p0.y + (direction) * offset.y
+	};
+
+	if (plr->grid[grid_pos.y * plr->dof.x + (int)delta.x] == 0)
+		plr->p0.x += (direction) * (3.125 * ctx()->delta_time * plr->disp.x);
+	if (plr->grid[(int)delta.y * plr->dof.x + grid_pos.x] == 0)
+		plr->p0.y += (direction) * (3.125 * ctx()->delta_time * plr->disp.y);
 }

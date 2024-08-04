@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 15:31:29 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 16:47:52 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ typedef struct s_player
 	t_vec2		p0;
 	t_vec2		disp;
 	t_vec2		camera;
-	int			dgr;
-	mlx_image_t	*map;
+	float		dgr;
+	mlx_image_t	*shape;
 	mlx_image_t	*view;
 	int			*grid;
 	t_ivec2		dof;
