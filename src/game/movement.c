@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:18:24 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 20:39:40 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:45:32 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,24 +66,22 @@ void	yaw(t_player *plr, t_mov direction)
 void	strafe(t_player *plr, t_mov direction)
 {
 	const t_ivec2	grid_pos = (t_ivec2){(int) plr->p0.x, (int) plr->p0.y};
-	t_vec2	offset;
-
-	offset = (t_vec2){
+	const t_vec2	offset = (t_vec2)
+	{
 		(plr->disp.x < 0) * (-0.2) + (plr->disp.x > 0) * 0.2,
 		(plr->disp.y < 0) * (-0.2) + (plr->disp.y > 0) * 0.2,
 	};
-	const t_vec2	delta = (t_vec2)
+	const t_ivec2	delta = (t_ivec2)
 	{
 		plr->p0.x - (direction) * offset.y,
 		plr->p0.y + (direction) * offset.x
 	};
 
-	if (plr->grid[grid_pos.y * plr->dof.x + (int)delta.x] == 0 && plr->grid[(int)delta.y * plr->dof.x + grid_pos.x] == 0)
+	if (plr->grid[grid_pos.y * plr->dof.x + delta.x] == 0 && plr->grid[delta.y * plr->dof.x + grid_pos.x] == 0)
 	{
 		plr->p0.x -= (direction) * (1.5625 * ctx()->delta_time * plr->disp.y);
 		plr->p0.y -= -(direction) * (1.5625 * ctx()->delta_time * plr->disp.x);
 	}
-	// if (plr->grid[delta.y * plr->dof.x + grid_pos.x] == 0)
 }
 
 static void	normal(t_player *plr, t_mov direction)
@@ -93,14 +91,14 @@ static void	normal(t_player *plr, t_mov direction)
 		(plr->disp.x <= 0) * (-0.2) + (plr->disp.x > 0) * 0.2,
 		(plr->disp.y <= 0) * (-0.2) + (plr->disp.y > 0) * 0.2,
 	};
-	const t_vec2	delta = (t_vec2)
+	const t_ivec2	delta = (t_ivec2)
 	{
 		plr->p0.x + (direction) * offset.x,
 		plr->p0.y + (direction) * offset.y
 	};
 
-	if (plr->grid[grid_pos.y * plr->dof.x + (int)delta.x] == 0)
+	if (plr->grid[grid_pos.y * plr->dof.x + delta.x] == 0)
 		plr->p0.x += (direction) * (3.125 * ctx()->delta_time * plr->disp.x);
-	if (plr->grid[(int)delta.y * plr->dof.x + grid_pos.x] == 0)
+	if (plr->grid[delta.y * plr->dof.x + grid_pos.x] == 0)
 		plr->p0.y += (direction) * (3.125 * ctx()->delta_time * plr->disp.y);
 }

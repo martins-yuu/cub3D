@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:42:49 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 17:55:29 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:46:07 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	draw_player(void *param)
 	transf_geometry(plr, normal_p0);
 	if (plr->to_draw.xy_axis)
 		draw_xy_axis(plr->shape, normal_p0, cube_size);
-	// printf("DELTA[%f] PS [%f]\n", ctx()->delta_time, 1/ctx()->delta_time);
+	printf("DELTA[%f] PS [%f]\n", ctx()->delta_time, 1/ctx()->delta_time);
 }
 
 static void	transf_geometry(t_player *plr, t_vec2 p0)
