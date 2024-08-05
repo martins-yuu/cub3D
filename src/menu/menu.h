@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:07:27 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 15:45:14 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:14:52 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,16 @@
 
 typedef struct s_menu
 {
-	t_map		*mini_map;
 	t_player	*player;
 	mlx_image_t	*menu_img;
 	mlx_image_t	*opts[5];
 }				t_menu;
 
-void	draw_menu(t_menu *menu, t_map *map, t_player *plr);
+void	draw_menu(t_menu *menu, t_player *plr);
 void	menu_position(const int width, const int height, void *menu);
 void	menu_keys(mlx_key_data_t data, void *param);
 
 // Keys for minimap //
-void	minimap_opts(mlx_key_data_t data, t_player *plr, mlx_image_t *mini_map);
+void	minimap_opts(mlx_key_data_t data, t_player *plr);
 
 #endif

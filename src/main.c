@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:53:01 by yuuko             #+#    #+#             */
-/*   Updated: 2024/08/04 16:16:20 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:14:37 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,15 @@ static void img_test();
 
 int	main(int argc, char **argv)
 {
-	t_map		mini_map;
 	t_player	player;
 	t_menu		menu;
 
 	ctx();
-
-	img_test();
-
+	// img_test();
 	map_ctx();
-
-	init_map(&mini_map);
-	init_player(&player, &mini_map);
-
-	draw_menu(&menu, &mini_map, &player);
+	init_map();
+	init_player(&player);
+	draw_menu(&menu, &player);
 
 	mlx_resize_hook(ctx(), menu_position, &menu);
 	ctx_on_loop(movement, &player);

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:42:49 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 20:46:07 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:26:43 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@
 static void		transf_geometry(t_player *plr, t_vec2 p0);
 static t_mat2	transf_matrix_org(t_vec2 p0, float drg);
 static void		draw_geometry(t_player *plr, t_mat2 mat);
-static void		draw_xy_axis(mlx_image_t *map, t_vec2 p0, int cube_size);
+static void		draw_xy_axis(mlx_image_t *map, t_vec2 p0);
 
 void	draw_player(void *param)
 {
+	const int	min_dim = map_ctx().min_dim;
+	t_vec2		normal_p0;
 	t_color		c;
 	t_player	*plr;
 
@@ -35,18 +37,13 @@ void	draw_player(void *param)
 	ft_memset(plr->shape->pixels, 0, plr->shape->width * plr->shape->height * 4);
 	ft_memset(plr->view->pixels, 0, plr->view->width * plr->view->height * 4);
 
-	// Normalize coord for the minimap
-	int	cube_size;
-	cube_size = get_min_dim((plr->dof));
-	t_vec2 normal_p0;
-	normal_p0.x = ((float) cube_size) * plr->p0.x;
-	normal_p0.y = ((float) cube_size) * plr->p0.y;
+	ray_casting(plr, min_dim);
 
-	ray_casting(plr, cube_size);
+	normal_p0 = (t_vec2){((float) min_dim) * plr->p0.x, ((float) min_dim) * plr->p0.y};
 	transf_geometry(plr, normal_p0);
 	if (plr->to_draw.xy_axis)
-		draw_xy_axis(plr->shape, normal_p0, cube_size);
-	printf("DELTA[%f] PS [%f]\n", ctx()->delta_time, 1/ctx()->delta_time);
+		draw_xy_axis(plr->shape, normal_p0);
+	// printf("DELTA[%f] FPS [%f]\n", ctx()->delta_time, 1/ctx()->delta_time);
 }
 
 static void	transf_geometry(t_player *plr, t_vec2 p0)
@@ -96,7 +93,7 @@ static void	draw_geometry(t_player *plr, t_mat2 mat)
 	}
 }
 
-static void	draw_xy_axis(mlx_image_t *map, t_vec2 p0, int cube_size)
+static void	draw_xy_axis(mlx_image_t *map, t_vec2 p0)
 {
 	t_color	c;
 	t_line	line_v;

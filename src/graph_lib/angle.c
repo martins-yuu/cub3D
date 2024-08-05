@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:04:18 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/26 15:51:55 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:33:51 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "graph_lib/graph_func.h"
 
-float deg_rad(float drg)
+float deg_rad(const float drg)
 {
 	return (drg * M_PI/180.0);
 }

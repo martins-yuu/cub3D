@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:38:13 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 16:06:03 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/05 19:34:39 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <math.h>
 #include "ctx/ctx.h"
+#include "game/game.h"
 #include "graph_lib/graph_func.h"
 #include "ray_casting/dda.h"
 
@@ -74,7 +75,8 @@ static void	draw_2drays(t_player *plr, t_vec2 ray_dir, int cube_size)
 
 	if (plr->to_draw.rays)
 	{
-		scale = mat2_scale((t_vec2){(float) cube_size, (float) cube_size});
+		// scale = mat2_scale((t_vec2){(float) cube_size, (float) cube_size});
+		scale = mat2_scale((t_vec2){map_ctx().min_dim, map_ctx().min_dim});
 		n_vec[0] = mat2_vec2_mult(scale, plr->p0);
 		n_vec[1] = mat2_vec2_mult(scale, ray_dir);
 		pixel[0] = (t_ivec2){(int) n_vec[0].x, (int) n_vec[0].y};

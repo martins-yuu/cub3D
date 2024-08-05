@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "MLX42/MLX42.h"
 #include "color/color.h"
 #include "ctx/ctx.h"
 #include "ctx/constants.h"
@@ -18,12 +19,13 @@
 #include "graph_lib/graph_types.h"
 
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 // #include "vector/bresenham.h"
 
-// static void	draw_minimap(t_map *mini_map);
-static void	draw_cube(t_map *mini_map, int x, int y, t_color c);
+static void	draw_minimap(mlx_image_t *mini_map_img);
+static void	draw_cube(mlx_image_t *mini_map, t_ivec2 grid_dim, t_color c);
 
 int	*map_0(int *g_x, int *g_y)
 {
@@ -86,7 +88,7 @@ int	*map_2(int *g_x, int *g_y)
 		1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,	// 1
 		1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,	// 2
 		1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1,	// 3
-		1, 0, 0, 0,78, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1,	// 4
+		1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1,	// 4
 		1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,	// 5
 		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,	// 6
 		1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,	// 7
@@ -192,85 +194,71 @@ int	*map_3(int *g_x, int *g_y)
 	return (grid);
 }
 
-int	get_orientation(char ch)
+float	get_orientation(char ch)
 {
-	return ((ch == 'N') * 90 + (ch == 'S') * 270
-		+ (ch == 'E') * 0 + (ch == 'W') + 180);
+	return ((ch == 'N') * 90.0 + (ch == 'S') * 270.0
+		+ (ch == 'E') * 0.0 + (ch == 'W') + 180.0);
 }
 
 t_map_ctx	map_ctx(void)
 {
-	static t_map_ctx map_ctx;
-	int	g_x;
-	int g_y;
+	static t_map_ctx	map_ctx;
+	int					g_x;
+	int					g_y;
 
 	if (map_ctx.grid == NULL)
 	{
 		map_ctx.grid = map_2(&g_x, &g_y);
 		map_ctx.grid_dim = (t_ivec2){g_x, g_y};
-		map_ctx.grid_p0 = (t_ivec2){4, 4};
+		map_ctx.grid_p0 = (t_ivec2){(float) 4, (float) 4};
 		map_ctx.orientation = get_orientation('N');
 		map_ctx.min_dim = get_min_dim(map_ctx.grid_dim);
+		map_ctx.img = ctx_img_new(MINI_MAP_S, MINI_MAP_S);
+		// printf("MIN DIM %d\n",map_ctx.min_dim );
 	}
 	return (map_ctx);
 }
 
-void	init_map(t_map *mini_map)
+void	init_map(void)
 {
-	int *grid;
-	int	g_x;
-	int g_y;
+	ctx_img_display(map_ctx().img, 0, 0);
+	map_ctx().img->enabled = false;
+	map_ctx().img->instances->z = Z_MINI_MAP;
+	draw_minimap(map_ctx().img);
 
-	grid = map_0(&g_x, &g_y);
-
-	mini_map->grid = grid;
-	mini_map->grid_dim.x = g_x;
-	mini_map->grid_dim.y = g_y;
-	mini_map->player_pos0.x = 4;
-	mini_map->player_pos0.y = 4;
-	mini_map->img = ctx_img_new(MINI_MAP_S, MINI_MAP_S);
-	ctx_img_display(mini_map->img, 0, 0);
-	mini_map->img->enabled = false;
-	mini_map->img->instances->z = Z_MINI_MAP;
-	draw_minimap(mini_map);
 }
 
- void	draw_minimap(t_map *mini_map)
+static void	draw_minimap(mlx_image_t *mini_map_img)
 {
-	uint32_t	i;
 	t_color		wall_c;
 	t_color		space_c;
 
-	int	x, y;
-	i = 0;
-
 	wall_c = color_hex_alpha(S_WHT, A050);
 	space_c = color_hex_alpha(S_BLK, A050);
-	x = 0;
-	y = 0;
-	while (y < mini_map->grid_dim.y)
+	t_ivec2	grid_pos = (t_ivec2){0, 0};
+	while (grid_pos.y < map_ctx().grid_dim.y)
 	{
-		x = 0;
-		while (x < mini_map->grid_dim.x)
+		grid_pos.x = 0;
+		while (grid_pos.x < map_ctx().grid_dim.x)
 		{
-			if (mini_map->grid[y * mini_map->grid_dim.x + x] == 1)
-				draw_cube(mini_map, x ,y, wall_c);
+			if (map_ctx().grid[grid_pos.y * map_ctx().grid_dim.x + grid_pos.x] == 1)
+				draw_cube(mini_map_img, grid_pos, wall_c);
 			else
-				draw_cube(mini_map, x ,y, space_c);
-			x++;
+				draw_cube(mini_map_img, grid_pos, space_c);
+			grid_pos.x++;
 		}
-		y++;
+		grid_pos.y++;
 	}
 }
 
-static void	draw_cube(t_map *mini_map, int x, int y, t_color c)
+static void	draw_cube(mlx_image_t *mini_map_img, t_ivec2 grd_pos, t_color c)
 {
 	t_color	c1;
 	int	p;
 	int	size;
 	int	nb_pixels;
 
-	size = get_min_dim(mini_map->grid_dim);
+	size = map_ctx().min_dim;
 	nb_pixels = size * size;
 	p = 0;
 	while (p < nb_pixels)
@@ -279,7 +267,7 @@ static void	draw_cube(t_map *mini_map, int x, int y, t_color c)
 			c1 = color_hex_alpha(D_GREY, A100);
 		else
 			c1 = c;
-		mlx_put_pixel(mini_map->img, (p % size) + x * size, (p / size) + y * size, c1.value);
+		mlx_put_pixel(mini_map_img, (p % size) + grd_pos.x * size, (p / size) + grd_pos.y * size, c1.value);
 		p++;
 	}
 }

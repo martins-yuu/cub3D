@@ -21,17 +21,13 @@
 
 #include <stdio.h>	// DELETE THIS
 
-static void player_coordinates(t_map *map, t_player *plr);
+static void player_coordinates(t_player *plr);
 static void	to_draw_elements(t_player *plr);
 
-void	init_player(t_player *plr, t_map *map)
+void	init_player(t_player *plr)
 {
-	player_coordinates(map, plr);
-
-	plr->grid = map->grid;	// NEED THIS?
-	plr->dof = map->grid_dim;
-
-	plr->shape = ctx_img_new(map->img->width, map->img->height);
+	player_coordinates(plr);
+	plr->shape = ctx_img_new(MINI_MAP_S, MINI_MAP_S);
 	ctx_img_display(plr->shape, 0, 0);
 	plr->shape->instances->z = Z_MINI_PLAYER;
 	to_draw_elements(plr);
@@ -40,11 +36,10 @@ void	init_player(t_player *plr, t_map *map)
 	plr->view->instances->z = Z_VIEW;
 }
 
-static void player_coordinates(t_map *map, t_player *plr)
+static void player_coordinates(t_player *plr)
 {
-	plr->p0.x = (float)(map->player_pos0.x + 0.5);
-	plr->p0.y = (float)(map->player_pos0.y + 0.5);
-	plr->dgr = 90;
+	plr->p0 = (t_vec2){map_ctx().grid_p0.x + 0.5, map_ctx().grid_p0.y + 0.5};
+	plr->dgr = map_ctx().orientation;
 	plr->disp.x = cosf(deg_rad(plr->dgr));
 	plr->disp.y = -sinf(deg_rad(plr->dgr));
 }

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 16:47:52 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:14:13 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,15 @@
 # include "graph_lib/graph_types.h"
 
 // MAP ATTRIBUTES //
-
-// # define MINI_MAP_S	512
 # define MINI_MAP_S	480
 
 // PLAYER ATTRIBUTES //
 # define PLAYER_SIZE	7
+# define WALL_OFFSET	0.1
 
 // PLAYER MOVEMENT //
-# define STEP 0.05
-# define STRF_STEP 0.02
+# define STEP		0.05
+# define STRF_STEP	0.02
 typedef enum e_mov
 {
 	ANG = 2,
@@ -43,18 +42,10 @@ typedef struct s_map_ctx
 	int			*grid;
 	t_ivec2		grid_dim;
 	t_ivec2		grid_p0;
-	int			orientation;
+	float		orientation;
 	int			min_dim;
-}				t_map_ctx;
-
-typedef struct s_map
-{
-	int			*grid;
-	t_ivec2		grid_dim;
-	int			player_ang;
-	t_ivec2		player_pos0;
 	mlx_image_t	*img;
-}				t_map;
+}				t_map_ctx;
 
 // PLAYER TYPES //
 typedef struct s_draw
@@ -71,19 +62,16 @@ typedef struct s_player
 	float		dgr;
 	mlx_image_t	*shape;
 	mlx_image_t	*view;
-	int			*grid;
-	t_ivec2		dof;
 	t_draw		to_draw;
 }				t_player;
 
 // MAP FUNCs //
 t_map_ctx	map_ctx(void);
-void		init_map(t_map *map);
+void		init_map(void);
 int			get_min_dim(t_ivec2 vec);
-void		draw_minimap(t_map *mini_map);
 
 // PLAYER FUNCs //
-void		init_player(t_player *player, t_map *map);
+void		init_player(t_player *player);
 void		player_shape(t_vec2 *geometry);
 void		draw_player(void *param);
 

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:05:06 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 16:30:41 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:15:07 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@
 
 static void	assign_text(mlx_image_t *opts[MENU_OPTS]);
 
-void	draw_menu(t_menu *menu, t_map *map, t_player *plr)
+void	draw_menu(t_menu *menu, t_player *plr)
 {
-	menu->mini_map = map;
 	menu->player = plr;
 	menu->menu_img = ctx_img_new(MENU_WIDTH, MENU_HEIGHT);
 	menu->menu_img->enabled = false;
@@ -81,7 +80,6 @@ void	menu_keys(mlx_key_data_t data, void *param)
 	int				i;
 	const t_menu	*menu = param;
 
-	// printf("DELTA_TIME [%f]\n", ctx()->delta_time);
 	if (data.key == MLX_KEY_ESCAPE && data.action == MLX_PRESS)
 		mlx_close_window(ctx());
 	if (data.key == MLX_KEY_M && data.action == MLX_PRESS)
@@ -91,5 +89,5 @@ void	menu_keys(mlx_key_data_t data, void *param)
 		while (i < MENU_OPTS)
 			menu->opts[i++]->enabled = menu->menu_img->enabled;
 	}
-	minimap_opts(data, menu->player, menu->mini_map->img);
+	minimap_opts(data, menu->player);
 }

@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:18:24 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/04 20:45:32 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:17:00 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,12 @@
 #include <stdint.h>
 #include <stdio.h>	// DELETE THIS
 
-static void	yaw(t_player *plr, t_mov direction);
-static void	strafe(t_player *plr, t_mov direction);
-static void	normal(t_player *plr, t_mov direction);
-
-// static void	resize(int32_t width, int32_t height, void* param)
-// {
-// 	mlx_t *instance = ctx();
-// 	instance->width = 512;
-// 	instance->height = 320;
-// }
+static void		yaw(t_player *plr, const t_mov direction);
+static void		strafe(t_player *plr, const t_mov direction);
+static void		normal(t_player *plr, const t_mov direction);
+static bool		v_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn);
+static bool		h_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn);
+static t_vec2	get_wall_offset(const t_vec2 disp);
 
 void	movement(void *param)
 {
@@ -53,7 +49,7 @@ void	movement(void *param)
 	draw_player(plr);
 }
 
-void	yaw(t_player *plr, t_mov direction)
+void	yaw(t_player *plr, const t_mov direction)
 {
 	float	rad;
 
@@ -63,42 +59,60 @@ void	yaw(t_player *plr, t_mov direction)
 	plr->disp.y = -sinf(rad);
 }
 
-void	strafe(t_player *plr, t_mov direction)
+void	strafe(t_player *plr, const t_mov drctn)
 {
 	const t_ivec2	grid_pos = (t_ivec2){(int) plr->p0.x, (int) plr->p0.y};
-	const t_vec2	offset = (t_vec2)
-	{
-		(plr->disp.x < 0) * (-0.2) + (plr->disp.x > 0) * 0.2,
-		(plr->disp.y < 0) * (-0.2) + (plr->disp.y > 0) * 0.2,
-	};
+	const t_vec2	wall_offset = get_wall_offset(plr->disp);
 	const t_ivec2	delta = (t_ivec2)
 	{
-		plr->p0.x - (direction) * offset.y,
-		plr->p0.y + (direction) * offset.x
+		plr->p0.x - (drctn) * wall_offset.y,
+		plr->p0.y + (drctn) * wall_offset.x
 	};
 
-	if (plr->grid[grid_pos.y * plr->dof.x + delta.x] == 0 && plr->grid[delta.y * plr->dof.x + grid_pos.x] == 0)
-	{
-		plr->p0.x -= (direction) * (1.5625 * ctx()->delta_time * plr->disp.y);
-		plr->p0.y -= -(direction) * (1.5625 * ctx()->delta_time * plr->disp.x);
-	}
+	if (v_coll(grid_pos, delta, drctn))
+		plr->p0.x -= (drctn) * (1.5625 * ctx()->delta_time * plr->disp.y);
+	if (h_coll(grid_pos, delta, drctn))
+		plr->p0.y -= -(drctn) * (1.5625 * ctx()->delta_time * plr->disp.x);
 }
 
-static void	normal(t_player *plr, t_mov direction)
+static void	normal(t_player *plr, const t_mov drctn)
 {
 	const t_ivec2	grid_pos = (t_ivec2){(int) plr->p0.x, (int) plr->p0.y};
-	const t_vec2	offset = (t_vec2){
-		(plr->disp.x <= 0) * (-0.2) + (plr->disp.x > 0) * 0.2,
-		(plr->disp.y <= 0) * (-0.2) + (plr->disp.y > 0) * 0.2,
-	};
+	const t_vec2	wall_offset = get_wall_offset(plr->disp);
 	const t_ivec2	delta = (t_ivec2)
 	{
-		plr->p0.x + (direction) * offset.x,
-		plr->p0.y + (direction) * offset.y
+		plr->p0.x + (drctn) * wall_offset.x,
+		plr->p0.y + (drctn) * wall_offset.y
 	};
 
-	if (plr->grid[grid_pos.y * plr->dof.x + delta.x] == 0)
-		plr->p0.x += (direction) * (3.125 * ctx()->delta_time * plr->disp.x);
-	if (plr->grid[delta.y * plr->dof.x + grid_pos.x] == 0)
-		plr->p0.y += (direction) * (3.125 * ctx()->delta_time * plr->disp.y);
+	if (v_coll(grid_pos, delta, drctn))
+		plr->p0.x += (drctn) * (3.125 * ctx()->delta_time * plr->disp.x);
+	if (h_coll(grid_pos, delta, drctn))
+		plr->p0.y += (drctn) * (3.125 * ctx()->delta_time * plr->disp.y);
+}
+
+static t_vec2	get_wall_offset(const t_vec2 disp)
+{
+	return ((t_vec2)
+		{
+			(disp.x <= 0) * (-WALL_OFFSET) + (disp.x > 0) * WALL_OFFSET,
+			(disp.y <= 0) * (-WALL_OFFSET) + (disp.y > 0) * WALL_OFFSET,
+		}
+	);
+}
+
+static bool	v_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn)
+{
+	const int		*grid = map_ctx().grid;
+	const t_ivec2	dim = map_ctx().grid_dim;
+
+	return (grid[grid_p.y * dim.x + del.x] == 0);
+}
+
+static bool	h_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn)
+{
+	const int		*grid = map_ctx().grid;
+	const t_ivec2	dim = map_ctx().grid_dim;
+
+	return (grid[del.y * dim.x + grid_p.x] == 0);
 }
