@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:28:51 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/31 17:45:07 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:06:48 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include "game/game.h"
 
-void	ray_casting(t_player *plr, int cube_size);
+void	ray_casting(t_player *plr);
 
 #endif

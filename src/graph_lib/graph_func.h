@@ -6,15 +6,15 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:20:57 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/05 17:40:42 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 17:15:20 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GRAPH_FUNC_H
 # define GRAPH_FUNC_H
 
-#include "MLX42/MLX42.h"
-#include "graph_lib/graph_types.h"
+# include "MLX42/MLX42.h"
+# include "graph_lib/graph_types.h"
 
 // ANGLE //
 float	deg_rad(const float drg);

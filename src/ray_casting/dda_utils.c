@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 20:59:54 by tforster          #+#    #+#             */
-/*   Updated: 2024/07/31 21:51:21 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:12:39 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,3 @@ float	distance_to_wall(const t_trigo trg, const t_vec2 p0, const t_vec2 p1)
 {
 	return (trg.cos * (p1.x - p0.x) - trg.sin * (p1.y - p0.y));
 }
-
-

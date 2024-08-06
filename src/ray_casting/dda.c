@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:38:11 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/05 19:48:12 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:23:48 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,17 @@
 #include "color/color.h"
 #include "game/game.h"
 
-static t_ray	vertical_ray(t_player *plr, t_trigo trg);
-static t_ray	get_vertical_dist(t_player *plr, t_ray ray, t_trigo trg);
-static t_ray	horizontal_ray(t_player *plr, t_trigo trg);
-static t_ray	get_horizontal_dist(t_player *plr, t_ray ray, t_trigo trg);
+static t_ray	vertical_ray(t_player *plr, const t_trigo trg);
+static t_ray	get_vert_dist(t_player *plr, t_ray ray, const t_trigo trg);
+static t_ray	horizontal_ray(t_player *plr, const t_trigo trg);
+static t_ray	get_hori_dist(t_player *plr, t_ray ray, const t_trigo trg);
 
 t_ray	dda(t_player *plr, const float ray_theta_drg)
 {
-	t_trigo	trg;
-	t_ray	ray_v;
-	t_ray	ray_h;
+	t_ray			ray_v;
+	t_ray			ray_h;
+	const t_trigo	trg = get_trigonometric_values(ray_theta_drg);
 
-	trg = get_trigonometric_values(ray_theta_drg);
 	ray_v = vertical_ray(plr, trg);
 	ray_h = horizontal_ray(plr, trg);
 	if (ray_v.dist < ray_h.dist)
@@ -40,110 +39,112 @@ t_ray	dda(t_player *plr, const float ray_theta_drg)
 	return (ray_h);
 }
 
-static t_ray	vertical_ray(t_player *plr, t_trigo trg)
+static t_ray	vertical_ray(t_player *plr, const t_trigo trg)
 {
 	const t_ivec2	dof = map_ctx().grid_dim;
 	t_ray			ray;
 
 	ray.dof = 0;
-	if (trg.cos > 0.001)
+	if (trg.cos > CHECK_LEFT)
 	{
 		ray.dir.x = (int) plr->p0.x + 1;
 		ray.dir.y = (plr->p0.x - ray.dir.x) * trg.tan + plr->p0.y;
-		ray.step = (t_vec2){1, -trg.tan};
-	} // LEFT
-	else if (trg.cos < -0.001)
+		ray.step = (t_vec2){1, -trg.tan, 1};
+	}
+	else if (trg.cos < CHECK_RIGHT)
 	{
 		ray.dir.x = (int) plr->p0.x - 0.0001;
 		ray.dir.y = (plr->p0.x - ray.dir.x) * trg.tan + plr->p0.y;
-		ray.step = (t_vec2){-1, trg.tan};
-	} // RIGHT
+		ray.step = (t_vec2){-1, trg.tan, 1};
+	}
 	else
 	{
-		ray.dir = (t_vec2){plr->p0.x, plr->p0.y};
-		// ray.dof = plr->dof.x;
+		ray.dir = (t_vec2){plr->p0.x, plr->p0.y, 1};
 		ray.dof = dof.x;
-	} // looking straight up or down
-	return (get_vertical_dist(plr, ray, trg));
+	}
+	return (get_vert_dist(plr, ray, trg));
 }
 
-static t_ray	get_vertical_dist(t_player *plr, t_ray ray, t_trigo trg)
+static t_ray	get_vert_dist(t_player *plr, t_ray ray, const t_trigo trg)
 {
 	const t_ivec2	dof = map_ctx().grid_dim;
 	const int		*grid = map_ctx().grid;
 	int				index;
 
 	ray.dist = 10000;
-	// while (ray.dof < plr->dof.x)
 	while (ray.dof < dof.x)
 	{
-		// index = ((int) ray.dir.y) * plr->dof.x + (int) ray.dir.x;
-		// if (check_if_in_map(index, plr->dof, plr->grid))
 		index = ((int) ray.dir.y) * dof.x + (int) ray.dir.x;
-		if (check_if_in_map(index, dof, grid))
+		if (check_if_in_map(index, dof, grid) == HIT_WALL)
 		{
 			ray.dof = dof.x;
 			ray.dist = distance_to_wall(trg, plr->p0, ray.dir);
-		} // HIT
+		}
 		else
 		{
-			ray.dir = (t_vec2){ray.dir.x + ray.step.x, ray.dir.y + ray.step.y};
-			ray.dof +=1;
-		} // CHECK NEXT VERTICAL
+			ray.dir = (t_vec2)
+			{
+				ray.dir.x + ray.step.x,
+				ray.dir.y + ray.step.y,
+				1,
+			};
+			ray.dof += 1;
+		}
 	}
 	return (ray);
 }
 
-static t_ray	horizontal_ray(t_player *plr, t_trigo trg)
+static t_ray	horizontal_ray(t_player *plr, const t_trigo trg)
 {
 	const t_ivec2	dof = map_ctx().grid_dim;
-	t_ray	ray;
+	t_ray			ray;
 
 	ray.dof = 0;
-	if (trg.sin > 0.001)
+	if (trg.sin > CHECK_UP)
 	{
 		ray.dir.y = (int) plr->p0.y - 0.0001;
 		ray.dir.x = (plr->p0.y - ray.dir.y) * trg.inv_tan + plr->p0.x;
-		ray.step = (t_vec2){trg.inv_tan, -1};
-	} // UP
-	else if (trg.sin < -0.001)
+		ray.step = (t_vec2){trg.inv_tan, -1, 1};
+	}
+	else if (trg.sin < CHECK_DOWN)
 	{
 		ray.dir.y = (int) plr->p0.y + 1;
 		ray.dir.x = (plr->p0.y - ray.dir.y) * trg.inv_tan + plr->p0.x;
-		ray.step = (t_vec2){-trg.inv_tan, 1};
-	} // DOWN
+		ray.step = (t_vec2){-trg.inv_tan, 1, 1};
+	}
 	else
 	{
-		ray.dir = (t_vec2){plr->p0.x, plr->p0.y};
-		// ray.dof = plr->dof.y;
+		ray.dir = (t_vec2){plr->p0.x, plr->p0.y, 1};
 		ray.dof = dof.y;
-	} // looking straight left or right
-	return (get_horizontal_dist(plr, ray, trg));
+	}
+	return (get_hori_dist(plr, ray, trg));
 }
 
-static t_ray	get_horizontal_dist(t_player *plr, t_ray ray, t_trigo trg)
+static t_ray	get_hori_dist(t_player *plr, t_ray ray, const t_trigo trg)
 {
 	const t_ivec2	dof = map_ctx().grid_dim;
 	const int		*grid = map_ctx().grid;
 	int				index;
 
 	ray.dist = 10000;
-	// while (ray.dof < plr->dof.y)
 	while (ray.dof < dof.y)
 	{
-		// index = ((int) ray.dir.y) * plr->dof.x + (int) ray.dir.x;
-		// if (check_if_in_map(index, plr->dof, plr->grid))
 		index = ((int) ray.dir.y) * dof.x + (int) ray.dir.x;
-		if (check_if_in_map(index, dof, grid))
+		if (check_if_in_map(index, dof, grid) == HIT_WALL)
 		{
 			ray.dof = dof.y;
 			ray.dist = distance_to_wall(trg, plr->p0, ray.dir);
-		} // HIT
+		}
 		else
 		{
-			ray.dir = (t_vec2){ray.dir.x + ray.step.x, ray.dir.y + ray.step.y};
+			ray.dir = (t_vec2)
+			{
+				ray.dir.x + ray.step.x,
+				ray.dir.y + ray.step.y,
+				1,
+			};
 			ray.dof += 1;
-		} // CHECK NEXT HORIZONTAL
+		}
 	}
 	return (ray);
 }

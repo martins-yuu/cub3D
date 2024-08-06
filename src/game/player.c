@@ -21,7 +21,7 @@
 
 #include <stdio.h>	// DELETE THIS
 
-static void player_coordinates(t_player *plr);
+static void	player_coordinates(t_player *plr);
 static void	to_draw_elements(t_player *plr);
 
 void	init_player(t_player *plr)
@@ -34,11 +34,13 @@ void	init_player(t_player *plr)
 	plr->view = ctx_img_new(MAX_WIDTH, MAX_HEIGHT);
 	ctx_img_display(plr->view, 0, 0);
 	plr->view->instances->z = Z_VIEW;
+	plr->pixel = 1;
+	plr->fov = 60.0;
 }
 
-static void player_coordinates(t_player *plr)
+static void	player_coordinates(t_player *plr)
 {
-	plr->p0 = (t_vec2){map_ctx().grid_p0.x + 0.5, map_ctx().grid_p0.y + 0.5};
+	plr->p0 = (t_vec2){map_ctx().grid_p0.x + 0.5, map_ctx().grid_p0.y + 0.5, 1};
 	plr->dgr = map_ctx().orientation;
 	plr->disp.x = cosf(deg_rad(plr->dgr));
 	plr->disp.y = -sinf(deg_rad(plr->dgr));

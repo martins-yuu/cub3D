@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:18:24 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/05 20:17:00 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:04:02 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 static void		yaw(t_player *plr, const t_mov direction);
 static void		strafe(t_player *plr, const t_mov direction);
 static void		normal(t_player *plr, const t_mov direction);
-static bool		v_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn);
-static bool		h_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn);
+static bool		v_coll(const t_ivec2 grid_p, const t_ivec2 del);
+static bool		h_coll(const t_ivec2 grid_p, const t_ivec2 del);
 static t_vec2	get_wall_offset(const t_vec2 disp);
 
 void	movement(void *param)
@@ -69,9 +69,9 @@ void	strafe(t_player *plr, const t_mov drctn)
 		plr->p0.y + (drctn) * wall_offset.x
 	};
 
-	if (v_coll(grid_pos, delta, drctn))
+	if (v_coll(grid_pos, delta))
 		plr->p0.x -= (drctn) * (1.5625 * ctx()->delta_time * plr->disp.y);
-	if (h_coll(grid_pos, delta, drctn))
+	if (h_coll(grid_pos, delta))
 		plr->p0.y -= -(drctn) * (1.5625 * ctx()->delta_time * plr->disp.x);
 }
 
@@ -85,9 +85,9 @@ static void	normal(t_player *plr, const t_mov drctn)
 		plr->p0.y + (drctn) * wall_offset.y
 	};
 
-	if (v_coll(grid_pos, delta, drctn))
+	if (v_coll(grid_pos, delta))
 		plr->p0.x += (drctn) * (3.125 * ctx()->delta_time * plr->disp.x);
-	if (h_coll(grid_pos, delta, drctn))
+	if (h_coll(grid_pos, delta))
 		plr->p0.y += (drctn) * (3.125 * ctx()->delta_time * plr->disp.y);
 }
 
@@ -97,11 +97,12 @@ static t_vec2	get_wall_offset(const t_vec2 disp)
 		{
 			(disp.x <= 0) * (-WALL_OFFSET) + (disp.x > 0) * WALL_OFFSET,
 			(disp.y <= 0) * (-WALL_OFFSET) + (disp.y > 0) * WALL_OFFSET,
+			1,
 		}
 	);
 }
 
-static bool	v_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn)
+static bool	v_coll(const t_ivec2 grid_p, const t_ivec2 del)
 {
 	const int		*grid = map_ctx().grid;
 	const t_ivec2	dim = map_ctx().grid_dim;
@@ -109,7 +110,7 @@ static bool	v_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn)
 	return (grid[grid_p.y * dim.x + del.x] == 0);
 }
 
-static bool	h_coll(const t_ivec2 grid_p, const t_ivec2 del, const t_mov drctn)
+static bool	h_coll(const t_ivec2 grid_p, const t_ivec2 del)
 {
 	const int		*grid = map_ctx().grid;
 	const t_ivec2	dim = map_ctx().grid_dim;

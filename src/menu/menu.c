@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:05:06 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/05 20:15:07 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 12:54:04 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	menu_position(const int width, const int height, void *param)
 	}
 }
 
-void	menu_keys(mlx_key_data_t data, void *param)
+void	menu_keys(const mlx_key_data_t data, void *param)
 {
 	int				i;
 	const t_menu	*menu = param;

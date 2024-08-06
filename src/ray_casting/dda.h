@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:39:06 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/01 21:01:29 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 17:08:34 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 
 # include "game/game.h"
 # include "ray_casting/ray_types.h"
+
+# define CHECK_LEFT		0.001
+# define CHECK_RIGHT	-0.001
+# define CHECK_UP		0.001
+# define CHECK_DOWN		-0.001
+# define HIT_WALL		1
 
 t_ray	dda(t_player *plr, const float ray_theta_drg);
 

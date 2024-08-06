@@ -6,14 +6,14 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:16:46 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/05 20:15:16 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 12:54:17 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MLX42/MLX42.h"
 #include "game/game.h"
 
-void	minimap_opts(mlx_key_data_t data, t_player *plr)
+void	minimap_opts(const mlx_key_data_t data, t_player *plr)
 {
 	if (data.key == MLX_KEY_X && data.action == MLX_PRESS)
 		if (map_ctx().img->enabled)
