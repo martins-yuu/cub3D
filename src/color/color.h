@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 04:51:38 by yuuko             #+#    #+#             */
-/*   Updated: 2024/08/01 21:52:02 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:04:21 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,6 @@
 # define COLOR_H
 
 # include <stdint.h>
-
-// # define WHITE	0xFFFFFFFF
-// # define S_WHT	0xF0F0F0FF
-// # define L_GREY	0xC8C8C8FF
-// # define GREY	0x7F7F7FFF
-// # define D_GREY 0x646464FF
-// # define S_BLK	0x272727FF
-// # define BLACK	0x000000FF
-
-// # define BLUE	0x0000FFFF
-// # define CYAN	0x00FFFFFF
-// # define GREEN	0x00FF00FF
-// # define YELLOW	0xFFFF00FF
-// # define RED	0xFF0000FF
-// # define MAGENT	0xFF0000FF
-
-// # define PURPLE 0x91199EFF
-// # define ORANGE 0xFF7F00FF
-// # define BROWN	0x8C5311FF
-
-// # define ALPHA_00	00
 
 typedef enum e_rgb
 {
