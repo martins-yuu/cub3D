@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 18:35:00 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/06 17:21:34 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/08 13:43:53 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,16 @@ typedef struct s_draw
 	bool		rays;
 }				t_draw;
 
+typedef struct s_texture
+{
+	mlx_texture_t	*north;
+	mlx_texture_t	*south;
+	mlx_texture_t	*east;
+	mlx_texture_t	*west;
+	mlx_texture_t	*floor;
+	mlx_texture_t	*ceiling;
+}				t_texture;
+
 typedef struct s_player
 {
 	t_vec2		p0;
@@ -65,6 +75,7 @@ typedef struct s_player
 	int			pixel;
 	float		fov;
 	t_draw		to_draw;
+	t_texture	*texture;
 }				t_player;
 
 // MAP FUNCs //

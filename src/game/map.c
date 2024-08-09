@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:17:56 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/06 19:22:03 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/08 20:45:32 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,28 @@ int	*map_3(int *grid_x, int *grid_y)
 	return (grid);
 }
 
+int	*map_4(int *grid_x, int *grid_y)
+{
+	static int	grid[] = {
+		#include "map4.cub"
+	};
+
+	*grid_x = 15;
+	*grid_y = 15;
+	return (grid);
+}
+
+int	*map_5(int *grid_x, int *grid_y)
+{
+	static int	grid[] = {
+		#include "map5.cub"
+	};
+
+	*grid_x = 8;
+	*grid_y = 8;
+	return (grid);
+}
+
 float	get_orientation(char ch)
 {
 	return ((ch == 'N') * 90.0 + (ch == 'S') * 270.0
@@ -85,9 +107,9 @@ t_map_ctx	map_ctx(void)
 
 	if (map_ctx.grid == NULL)
 	{
-		map_ctx.grid = map_2(&grid_x, &grid_y);
+		map_ctx.grid = map_4(&grid_x, &grid_y);
 		map_ctx.grid_dim = (t_ivec2){grid_x, grid_y};
-		map_ctx.grid_p0 = (t_ivec2){(float) 6, (float) 4};
+		map_ctx.grid_p0 = (t_ivec2){(float) 2, (float) 5};
 		map_ctx.orientation = get_orientation('N');
 		map_ctx.min_dim = get_min_dim(map_ctx.grid_dim);
 		map_ctx.img = ctx_img_new(MINI_MAP_S, MINI_MAP_S);

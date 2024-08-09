@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 17:23:31 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/06 15:24:12 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/08 20:01:31 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ typedef struct s_ray
 	t_vec2	step;
 	int		dof;
 	float	dist;
+	int		mt;
 	t_color	color;
+	int		wall_type;
 }				t_ray;
 
 typedef struct s_trigo

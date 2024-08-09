@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:38:11 by tforster          #+#    #+#             */
-/*   Updated: 2024/08/06 18:39:26 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/08 20:07:23 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,18 @@ t_ray	dda(t_player *plr, const float ray_theta_drg)
 	ray_h = horizontal_ray(plr, trg);
 	if (ray_v.dist < ray_h.dist)
 	{
+		ray_h.mt = ray_v.mt;
 		ray_h.dir.x = ray_v.dir.x;
 		ray_h.dir.y = ray_v.dir.y;
 		ray_h.dist = ray_v.dist;
 		ray_h.color = color_hex_alpha(GREY, A100);
+		ray_h.wall_type = 0;
 	}
 	else
+	{
 		ray_h.color = color_hex_alpha(D_GREY, A100);
+		ray_h.wall_type = 1;
+	}
 	return (ray_h);
 }
 
@@ -77,6 +82,7 @@ static t_ray	get_vert_dist(t_player *plr, t_ray ray, const t_trigo trg)
 		index = ((int) ray.dir.y) * dof.x + (int) ray.dir.x;
 		if (check_if_in_map(index, dof, grid) == HIT_WALL)
 		{
+			ray.mt = grid[index] - 1;
 			ray.dof = dof.x;
 			ray.dist = distance_to_wall(trg, plr->p0, ray.dir);
 		}
@@ -132,6 +138,7 @@ static t_ray	get_hori_dist(t_player *plr, t_ray ray, const t_trigo trg)
 		index = ((int) ray.dir.y) * dof.x + (int) ray.dir.x;
 		if (check_if_in_map(index, dof, grid) == HIT_WALL)
 		{
+			ray.mt = grid[index] - 1;
 			ray.dof = dof.y;
 			ray.dist = distance_to_wall(trg, plr->p0, ray.dir);
 		}

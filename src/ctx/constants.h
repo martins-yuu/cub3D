@@ -6,7 +6,7 @@
 /*   By: tforster <tfforster@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:11:43 by yuuko             #+#    #+#             */
-/*   Updated: 2024/08/04 16:12:51 by tforster         ###   ########.fr       */
+/*   Updated: 2024/08/08 19:33:25 by tforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 # define TITLE "Cub3D"
 # define MIN_WIDTH 512
 # define MIN_HEIGHT 320
-# define WIDTH 1024
+// # define WIDTH 1024
+# define WIDTH 960
 # define HEIGHT 640
 # define MAX_WIDTH 1920
 # define MAX_HEIGHT 995
